@@ -1,43 +1,84 @@
-using System;
-using System.Linq;
-using DevExpress.Xpo;
-using DevExpress.ExpressApp;
-using DevExpress.Data.Filtering;
-using DevExpress.ExpressApp.Xpo;
-using DevExpress.Persistent.Base;
-using DevExpress.ExpressApp.Updating;
-using DevExpress.Persistent.BaseImpl;
-using DevExpress.ExpressApp.Security;
 //using DevExpress.ExpressApp.Reports;
 //using DevExpress.ExpressApp.PivotChart;
 //using DevExpress.ExpressApp.Security.Strategy;
 //using XAF13._2_Demo.Module.BusinessObjects;
+using System;
+using System.Diagnostics;
+using DevExpress.Data.Filtering;
+using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.Updating;
+using XAF13_2_Demo.Module.BusinessObjects;
 
-namespace XAF13._2_Demo.Module.DatabaseUpdate
+namespace XAF13_2_Demo.Module.DatabaseUpdate
 {
     // For more typical usage scenarios, be sure to check out http://documentation.devexpress.com/#Xaf/clsDevExpressExpressAppUpdatingModuleUpdatertopic
     public class Updater : ModuleUpdater
     {
-        public Updater(IObjectSpace objectSpace, Version currentDBVersion) :
+        private readonly XafApplication _Application;
+
+        public Updater(XafApplication application, IObjectSpace objectSpace, Version currentDBVersion) :
             base(objectSpace, currentDBVersion)
         {
+            _Application = application;
         }
+
         public override void UpdateDatabaseAfterUpdateSchema()
         {
             base.UpdateDatabaseAfterUpdateSchema();
-            //string name = "MyName";
-            //DomainObject1 theObject = ObjectSpace.FindObject<DomainObject1>(CriteriaOperator.Parse("Name=?", name));
-            //if(theObject == null) {
-            //    theObject = ObjectSpace.CreateObject<DomainObject1>();
-            //    theObject.Name = name;
-            //}
-        }
-        public override void UpdateDatabaseBeforeUpdateSchema()
-        {
-            base.UpdateDatabaseBeforeUpdateSchema();
-            //if(CurrentDBVersion < new Version("1.1.0.0") && CurrentDBVersion > new Version("0.0.0.0")) {
-            //    RenameColumn("DomainObject1Table", "OldColumnName", "NewColumnName");
-            //}
+
+            const int objectCount = 1000;
+
+            var os = _Application.ObjectSpaceProvider.CreateUpdatingObjectSpace(false);
+
+            for (int i = 0; i <= objectCount; i++)
+            {
+                var name = "Item" + i;
+
+                var count = os.GetObjectsCount(typeof(LargeBusinessObject), CriteriaOperator.Parse("Name = ?", name));
+
+                var title = "Object " + i + " of " + objectCount;
+
+                this.UpdateStatus("DBUpdate", title, "Searching the " + name + " object");
+
+                if (count <= 0)
+                {
+                    this.UpdateStatus("DBUpdate", title, "Creating the " + name + " object");
+                    var obj = os.CreateObject<LargeBusinessObject>();
+                    obj.Name = name;
+
+                    obj.Property1 = NLipsum.Core.LipsumGenerator.Generate(100);
+                    obj.Property2 = NLipsum.Core.LipsumGenerator.Generate(100);
+                    obj.Property3 = NLipsum.Core.LipsumGenerator.Generate(100);
+                    obj.Property4 = NLipsum.Core.LipsumGenerator.Generate(100);
+                    obj.Property5 = NLipsum.Core.LipsumGenerator.Generate(100);
+                    obj.Property6 = NLipsum.Core.LipsumGenerator.Generate(100);
+                    obj.Property7 = NLipsum.Core.LipsumGenerator.Generate(100);
+                    obj.Property8 = NLipsum.Core.LipsumGenerator.Generate(100);
+                    obj.Property9 = NLipsum.Core.LipsumGenerator.Generate(100);
+                    obj.Property10 = NLipsum.Core.LipsumGenerator.Generate(100);
+                }
+
+                if (i % 100 == 0)
+                {
+                    if (os.IsModified)
+                    {
+                        this.UpdateStatus("DBUpdate", title, "Committing changes");    
+
+                        os.CommitChanges();
+
+                        if (os != null)
+                            os.Dispose();
+
+                        os = _Application.ObjectSpaceProvider.CreateUpdatingObjectSpace(false);    
+                    }
+                }
+            }
+
+            if (!os.IsDisposed)
+            {
+                os.CommitChanges();
+                os.Dispose();    
+            }
         }
     }
 }

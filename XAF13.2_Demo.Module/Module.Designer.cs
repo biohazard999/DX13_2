@@ -1,4 +1,4 @@
-namespace XAF13._2_Demo.Module
+namespace XAF13_2_Demo.Module
 {
     partial class _2_DemoModule
     {

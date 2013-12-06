@@ -1,3 +1,7 @@
-﻿<?xml version="1.0" ?>
-<Application Title="XAF13.2_Demo" Logo="ExpressAppLogo" />
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application Title="XAF13.2_Demo" Logo="ExpressAppLogo">
+  <Options UseServerMode="True" />
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="13.2.5.0" IsNewNode="True" />
+  </SchemaModules>
+</Application>

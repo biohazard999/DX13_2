@@ -1,4 +1,4 @@
-namespace XAF13._2_Demo.Module.Win
+namespace XAF13_2_Demo.Module.Win
 {
     partial class _2_DemoWindowsFormsModule
     {
@@ -31,7 +31,7 @@ namespace XAF13._2_Demo.Module.Win
             // 
             // _2_DemoWindowsFormsModule
             // 
-            this.RequiredModuleTypes.Add(typeof(XAF13._2_Demo.Module._2_DemoModule));
+            this.RequiredModuleTypes.Add(typeof(_2_DemoModule));
             this.RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.Win.SystemModule.SystemWindowsFormsModule));
 
         }

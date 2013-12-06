@@ -8,7 +8,7 @@
     <ProjectGuid>{7964F87D-BC5D-4C4E-8B2F-71E89739AA97}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XAF13._2_Demo.Module.Win</RootNamespace>
+    <RootNamespace>XAF13_2_Demo.Module.Win</RootNamespace>
     <AssemblyName>XAF13.2_Demo.Module.Win</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>

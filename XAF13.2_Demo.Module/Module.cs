@@ -1,20 +1,9 @@
 using System;
-using System.Text;
-using System.Linq;
-using DevExpress.ExpressApp;
-using System.ComponentModel;
-using DevExpress.ExpressApp.DC;
 using System.Collections.Generic;
-using DevExpress.Persistent.Base;
-using DevExpress.ExpressApp.Model;
-using DevExpress.ExpressApp.Actions;
-using DevExpress.ExpressApp.Editors;
+using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Updating;
-using DevExpress.ExpressApp.Model.Core;
-using DevExpress.ExpressApp.Model.DomainLogics;
-using DevExpress.ExpressApp.Model.NodeGenerators;
 
-namespace XAF13._2_Demo.Module
+namespace XAF13_2_Demo.Module
 {
     // For more typical usage scenarios, be sure to check out http://documentation.devexpress.com/#Xaf/clsDevExpressExpressAppModuleBasetopic.
     public sealed partial class _2_DemoModule : ModuleBase
@@ -25,8 +14,9 @@ namespace XAF13._2_Demo.Module
         }
         public override IEnumerable<ModuleUpdater> GetModuleUpdaters(IObjectSpace objectSpace, Version versionFromDB)
         {
-            ModuleUpdater updater = new DatabaseUpdate.Updater(objectSpace, versionFromDB);
-            return new ModuleUpdater[] { updater };
+            var notificationUpdater = new DatabaseUpdate.NotificationUpdater(objectSpace, versionFromDB);
+            ModuleUpdater updater = new DatabaseUpdate.Updater(Application, objectSpace, versionFromDB);
+            return new ModuleUpdater[] { notificationUpdater, updater };
         }
         public override void Setup(XafApplication application)
         {

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using DevExpress.Persistent.Base;
+﻿using DevExpress.Persistent.Base;
 using DevExpress.Xpo;
-using XAF13._2_Demo.Module.Annotations;
+using XAF13_2_Demo.Module.Properties;
 
-namespace XAF13._2_Demo.Module.BusinessObjects
+namespace XAF13_2_Demo.Module.BusinessObjects
 {
 
     [NonPersistent]
@@ -37,10 +32,18 @@ namespace XAF13._2_Demo.Module.BusinessObjects
         private string _Property8;
         private string _Property9;
         private string _Property10;
+        private string _Name;
 
         public LargeBusinessObject(Session session) : base(session)
         {
         }
+
+        public string Name
+        {
+            get { return _Name; }
+            set { SetPropertyValue("Name", ref _Name, value); }
+        }
+
 
         [Size(SizeAttribute.Unlimited)]
         public string Property1
@@ -107,6 +110,7 @@ namespace XAF13._2_Demo.Module.BusinessObjects
 
         [Size(SizeAttribute.Unlimited)]
         public string Property10
+
         {
             get { return _Property10; }
             set { SetPropertyValue("Property10", ref _Property10, value); }
