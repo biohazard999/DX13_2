@@ -1,27 +1,14 @@
 ﻿using DevExpress.Persistent.Base;
 using DevExpress.Xpo;
-using XAF13_2_Demo.Module.Properties;
+using XAF13_2_Demo.Module.Helpers;
 
 namespace XAF13_2_Demo.Module.BusinessObjects
 {
-
-    [NonPersistent]
-    public abstract class BaseObject : XPObject
-    {
-        protected BaseObject(Session session) : base(session)
-        {
-        }
-
-          [NotifyPropertyChangedInvocator]
-        protected new virtual bool SetPropertyValue<T>(string propertyName, ref T propertyValueHolder, T newValue)
-        {
-            return base.SetPropertyValue(propertyName, ref propertyValueHolder, newValue);
-        }
-    }
-
     [DefaultClassOptions]
     public class LargeBusinessObject : BaseObject
     {
+        public static readonly Fields<LargeBusinessObject> Field = new Fields<LargeBusinessObject>();
+
         private string _Property1;
         private string _Property2;
         private string _Property3;
@@ -33,17 +20,24 @@ namespace XAF13_2_Demo.Module.BusinessObjects
         private string _Property9;
         private string _Property10;
         private string _Name;
+        private int _IntPropertyToCalculate;
 
-        public LargeBusinessObject(Session session) : base(session)
+        public LargeBusinessObject(Session session)
+            : base(session)
         {
         }
-
+        
         public string Name
         {
             get { return _Name; }
             set { SetPropertyValue("Name", ref _Name, value); }
         }
 
+        public int IntPropertyToCalculate
+        {
+            get { return _IntPropertyToCalculate; }
+            set { SetPropertyValue("IntPropertyToCalculate", ref _IntPropertyToCalculate, value); }
+        }
 
         [Size(SizeAttribute.Unlimited)]
         public string Property1
@@ -110,7 +104,6 @@ namespace XAF13_2_Demo.Module.BusinessObjects
 
         [Size(SizeAttribute.Unlimited)]
         public string Property10
-
         {
             get { return _Property10; }
             set { SetPropertyValue("Property10", ref _Property10, value); }

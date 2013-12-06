@@ -26,11 +26,23 @@ namespace XAF13_2_Demo.Module.DatabaseUpdate
         {
             base.UpdateDatabaseAfterUpdateSchema();
 
+            CreateCalculationProxy(SumMode.PureClientSide);
+            CreateCalculationProxy(SumMode.ClientSide);
+            CreateCalculationProxy(SumMode.ServerSide);
+
             const int objectCount = 1000;
 
             var os = _Application.ObjectSpaceProvider.CreateUpdatingObjectSpace(false);
 
-            for (int i = 0; i <= objectCount; i++)
+            var overAllCount = os.GetObjectsCount(typeof(LargeBusinessObject), null);
+
+            if (overAllCount == objectCount)
+            {
+                os.Dispose();
+                return;
+            }
+            
+            for (int i = 1; i <= objectCount; i++)
             {
                 var name = "Item" + i;
 
@@ -45,6 +57,7 @@ namespace XAF13_2_Demo.Module.DatabaseUpdate
                     this.UpdateStatus("DBUpdate", title, "Creating the " + name + " object");
                     var obj = os.CreateObject<LargeBusinessObject>();
                     obj.Name = name;
+                    obj.IntPropertyToCalculate = i;
 
                     obj.Property1 = NLipsum.Core.LipsumGenerator.Generate(100);
                     obj.Property2 = NLipsum.Core.LipsumGenerator.Generate(100);
@@ -78,6 +91,23 @@ namespace XAF13_2_Demo.Module.DatabaseUpdate
             {
                 os.CommitChanges();
                 os.Dispose();    
+            }
+        }
+
+        private void CreateCalculationProxy(SumMode mode)
+        {
+            UpdateStatus("DBUpdate", "Proxy", "Creating and searching proxy in mode {0}", mode);
+
+            var criteria = CriteriaOperator.Parse("SumMode == ?", mode);
+
+            var proxy =
+                ObjectSpace.FindObject<XPViewCalculationProxy>(criteria);
+
+            if (proxy == null)
+            {
+                proxy = ObjectSpace.CreateObject<XPViewCalculationProxy>();
+                proxy.SumMode = mode;
+                ObjectSpace.CommitChanges();
             }
         }
     }

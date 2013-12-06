@@ -86,8 +86,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessObjects\BaseObject.cs" />
     <Compile Include="BusinessObjects\LargeBusinessObject.cs" />
+    <Compile Include="BusinessObjects\XPViewBusinessObjectProxy.cs" />
+    <Compile Include="Controllers\XPViewBusinessObjectProxyController.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\XPViewCalculationProxyController.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DatabaseUpdate\NotificationUpdater.cs" />
+    <Compile Include="Helpers\Fields.cs" />
     <Compile Include="Module.cs">
       <SubType>Component</SubType>
     </Compile>
