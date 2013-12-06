@@ -12,12 +12,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlogPost", "BlogPost", "{21E219F1-0351-4A79-8CEE-4114F4F1553F}"
 	ProjectSection(SolutionItems) = preProject
 		_Blog\Part1.md = _Blog\Part1.md
+		_Blog\Part2.md = _Blog\Part2.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{E95840FB-1BE8-4BFD-9DBA-C55501C3044B}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Para.Modules.Win.TaskbarIntegration", "Para.Modules.Win.TaskbarIntegration\Para.Modules.Win.TaskbarIntegration.csproj", "{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +47,12 @@ Global
 		{D05D93DF-312D-4D4E-B980-726871EC7833}.EasyTest|Any CPU.Build.0 = EasyTest|Any CPU
 		{D05D93DF-312D-4D4E-B980-726871EC7833}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D05D93DF-312D-4D4E-B980-726871EC7833}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.EasyTest|Any CPU.ActiveCfg = Release|Any CPU
+		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.EasyTest|Any CPU.Build.0 = Release|Any CPU
+		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

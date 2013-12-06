@@ -40,7 +40,6 @@ namespace XAF13_2_Demo.Win
             // 
             // _2_DemoWindowsFormsApplication
             // 
-            this.ApplicationName = "XAF13.2_Demo";
             this.Modules.Add(this.module1);
             this.Modules.Add(this.module2);
             this.Modules.Add(this.module3);
