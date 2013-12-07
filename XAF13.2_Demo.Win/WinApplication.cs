@@ -8,9 +8,9 @@ using DevExpress.ExpressApp.Xpo;
 namespace XAF13_2_Demo.Win
 {
     // For more typical usage scenarios, be sure to check out http://documentation.devexpress.com/#Xaf/DevExpressExpressAppWinWinApplicationMembersTopicAll
-    public partial class _2_DemoWindowsFormsApplication : WinApplication
+    public partial class DemoWindowsFormsApplication : WinApplication
     {
-        public _2_DemoWindowsFormsApplication()
+        public DemoWindowsFormsApplication()
         {
             InitializeComponent();
         }

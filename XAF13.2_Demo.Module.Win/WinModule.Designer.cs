@@ -1,6 +1,8 @@
+using Para.Modules.Win.TaskbarIntegration;
+
 namespace XAF13_2_Demo.Module.Win
 {
-    partial class _2_DemoWindowsFormsModule
+    partial class DemoWindowsFormsModule
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,9 +31,10 @@ namespace XAF13_2_Demo.Module.Win
         private void InitializeComponent()
         {
             // 
-            // _2_DemoWindowsFormsModule
+            // DemoWindowsFormsModule
             // 
-            this.RequiredModuleTypes.Add(typeof(_2_DemoModule));
+            this.RequiredModuleTypes.Add(typeof(DemoModule));
+            this.RequiredModuleTypes.Add(typeof(TaskbarIntegrationWindowsFormsModule));
             this.RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.Win.SystemModule.SystemWindowsFormsModule));
 
         }

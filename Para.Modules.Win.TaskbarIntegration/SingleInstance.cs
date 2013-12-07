@@ -2,41 +2,39 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
-using System.Reflection;
 using System.Threading;
-using System.Windows.Forms;
-using DevExpress.ExpressApp.Win;
-using Microsoft.VisualBasic.ApplicationServices;
 
 namespace Para.Modules.Win.TaskbarIntegration
 {
     /// <summary>
-    /// Enforces single instance for an application.
+    ///     Enforces single instance for an application.
     /// </summary>
     public class SingleInstance : IDisposable
     {
-        private Mutex mutex = null;
-        private Boolean ownsMutex = false;
-        private Guid identifier = Guid.Empty;
+        private readonly Boolean _OwnsMutex;
+        private Guid _Identifier = Guid.Empty;
+        private Mutex _Mutex;
 
         /// <summary>
-        /// Enforces single instance for an application.
+        ///     Enforces single instance for an application.
         /// </summary>
         /// <param name="identifier">An identifier unique to this application.</param>
         public SingleInstance(Guid identifier)
         {
-            this.identifier = identifier;
-            mutex = new Mutex(true, identifier.ToString(), out ownsMutex);
+            this._Identifier = identifier;
+            _Mutex = new Mutex(true, identifier.ToString(), out _OwnsMutex);
         }
 
         /// <summary>
-        /// Indicates whether this is the first instance of this application.
+        ///     Indicates whether this is the first instance of this application.
         /// </summary>
         public Boolean IsFirstInstance
-        { get { return ownsMutex; } }
+        {
+            get { return _OwnsMutex; }
+        }
 
         /// <summary>
-        /// Passes the given arguments to the first running instance of the application.
+        ///     Passes the given arguments to the first running instance of the application.
         /// </summary>
         /// <param name="arguments">The arguments to pass.</param>
         /// <returns>Return true if the operation succeded, false otherwise.</returns>
@@ -47,8 +45,8 @@ namespace Para.Modules.Win.TaskbarIntegration
 
             try
             {
-                using (NamedPipeClientStream client = new NamedPipeClientStream(identifier.ToString()))
-                using (StreamWriter writer = new StreamWriter(client))
+                using (var client = new NamedPipeClientStream(_Identifier.ToString()))
+                using (var writer = new StreamWriter(client))
                 {
                     client.Connect(200);
 
@@ -58,51 +56,54 @@ namespace Para.Modules.Win.TaskbarIntegration
                 return true;
             }
             catch (TimeoutException)
-            { } //Couldn't connect to server
+            {
+            } //Couldn't connect to server
             catch (IOException)
-            { } //Pipe was broken
+            {
+            } //Pipe was broken
 
             return false;
         }
 
         /// <summary>
-        /// Listens for arguments being passed from successive instances of the applicaiton.
+        ///     Listens for arguments being passed from successive instances of the applicaiton.
         /// </summary>
         public void ListenForArgumentsFromSuccessiveInstances()
         {
             if (!IsFirstInstance)
                 throw new InvalidOperationException("This is not the first instance.");
-            ThreadPool.QueueUserWorkItem(new WaitCallback(ListenForArguments));
+            ThreadPool.QueueUserWorkItem(ListenForArguments);
         }
 
         /// <summary>
-        /// Listens for arguments on a named pipe.
+        ///     Listens for arguments on a named pipe.
         /// </summary>
         /// <param name="state">State object required by WaitCallback delegate.</param>
         private void ListenForArguments(Object state)
         {
             try
             {
-                using (NamedPipeServerStream server = new NamedPipeServerStream(identifier.ToString()))
-                using (StreamReader reader = new StreamReader(server))
+                using (var server = new NamedPipeServerStream(_Identifier.ToString()))
+                using (var reader = new StreamReader(server))
                 {
                     server.WaitForConnection();
 
-                    List<String> arguments = new List<String>();
+                    var arguments = new List<String>();
                     while (server.IsConnected)
                     {
-                        var result = reader.ReadLine();
+                        string result = reader.ReadLine();
 
-                        if(!string.IsNullOrEmpty(result))
+                        if (!string.IsNullOrEmpty(result))
                             arguments.Add(result);
                     }
-                        
 
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(CallOnArgumentsReceived), arguments.ToArray());
+
+                    ThreadPool.QueueUserWorkItem(CallOnArgumentsReceived, arguments.ToArray());
                 }
             }
             catch (IOException)
-            { } //Pipe was broken
+            {
+            } //Pipe was broken
             finally
             {
                 ListenForArguments(null);
@@ -110,38 +111,47 @@ namespace Para.Modules.Win.TaskbarIntegration
         }
 
         /// <summary>
-        /// Calls the OnArgumentsReceived method casting the state Object to String[].
+        ///     Calls the OnArgumentsReceived method casting the state Object to String[].
         /// </summary>
         /// <param name="state">The arguments to pass.</param>
         private void CallOnArgumentsReceived(Object state)
         {
-            OnArgumentsReceived((String[])state);
+            OnArgumentsReceived((String[]) state);
         }
+
         /// <summary>
-        /// Event raised when arguments are received from successive instances.
+        ///     Event raised when arguments are received from successive instances.
         /// </summary>
         public event EventHandler<ArgumentsReceivedEventArgs> ArgumentsReceived;
+
         /// <summary>
-        /// Fires the ArgumentsReceived event.
+        ///     Fires the ArgumentsReceived event.
         /// </summary>
         /// <param name="arguments">The arguments to pass with the ArgumentsReceivedEventArgs.</param>
         private void OnArgumentsReceived(String[] arguments)
         {
             if (ArgumentsReceived != null)
-                ArgumentsReceived(this, new ArgumentsReceivedEventArgs() { Args = arguments });
+                ArgumentsReceived(this, new ArgumentsReceivedEventArgs {Args = arguments});
         }
 
         #region IDisposable
-        private Boolean disposed = false;
+
+        private Boolean disposed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
             {
-                if (mutex != null && ownsMutex)
+                if (_Mutex != null && _OwnsMutex)
                 {
-                    mutex.ReleaseMutex();
-                    mutex = null;
+                    _Mutex.ReleaseMutex();
+                    _Mutex = null;
                 }
                 disposed = true;
             }
@@ -152,29 +162,6 @@ namespace Para.Modules.Win.TaskbarIntegration
             Dispose(false);
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
         #endregion
-    }
-
-    /// <summary>
-    /// Holds a list of arguments given to an application at startup.
-    /// </summary>
-    public class ArgumentsReceivedEventArgs : EventArgs
-    {
-        public String[] Args { get; set; }
-    }
-
-    public static class ControlExtentions
-    {
-        public delegate void InvokeHandler();
-        public static void SafeInvoke(this System.Windows.Forms.Control control, InvokeHandler handler)
-        {
-            if (control.InvokeRequired) control.Invoke(handler);
-            else handler();
-        }
     }
 }

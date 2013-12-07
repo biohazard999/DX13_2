@@ -3,7 +3,7 @@ using XAF13_2_Demo.Module.Win;
 
 namespace XAF13_2_Demo.Win
 {
-    partial class _2_DemoWindowsFormsApplication
+    partial class DemoWindowsFormsApplication
     {
         /// <summary> 
         /// Required designer variable.
@@ -33,12 +33,12 @@ namespace XAF13_2_Demo.Win
         {
             this.module1 = new DevExpress.ExpressApp.SystemModule.SystemModule();
             this.module2 = new DevExpress.ExpressApp.Win.SystemModule.SystemWindowsFormsModule();
-            this.module3 = new _2_DemoModule();
-            this.module4 = new _2_DemoWindowsFormsModule();
+            this.module3 = new DemoModule();
+            this.module4 = new DemoWindowsFormsModule();
 
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
-            // _2_DemoWindowsFormsApplication
+            // DemoWindowsFormsApplication
             // 
             this.Modules.Add(this.module1);
             this.Modules.Add(this.module2);
@@ -55,7 +55,7 @@ namespace XAF13_2_Demo.Win
 
         private DevExpress.ExpressApp.SystemModule.SystemModule module1;
         private DevExpress.ExpressApp.Win.SystemModule.SystemWindowsFormsModule module2;
-        private _2_DemoModule module3;
-        private _2_DemoWindowsFormsModule module4;
+        private DemoModule module3;
+        private DemoWindowsFormsModule module4;
     }
 }

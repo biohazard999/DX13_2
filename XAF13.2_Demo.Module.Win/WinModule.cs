@@ -8,9 +8,9 @@ namespace XAF13_2_Demo.Module.Win
 {
     [ToolboxItemFilter("Xaf.Platform.Win")]
     // For more typical usage scenarios, be sure to check out http://documentation.devexpress.com/#Xaf/clsDevExpressExpressAppModuleBasetopic.
-    public sealed partial class _2_DemoWindowsFormsModule : ModuleBase
+    public sealed partial class DemoWindowsFormsModule : ModuleBase
     {
-        public _2_DemoWindowsFormsModule()
+        public DemoWindowsFormsModule()
         {
             InitializeComponent();
         }

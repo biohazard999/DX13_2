@@ -26,29 +26,17 @@ namespace XAF13_2_Demo.Win
 
             var guid = new Guid("B3F684D7-4CE8-471D-8E56-61BCC274EAA5");
 
-            //var s = string.Empty;
-
-            //foreach (var i in arguments)
-            //    s += "\n" + i;
-
-            //MessageBox.Show("Arguments: " + s);
-
             using (var instance = new SingleInstance(guid))
             {
                 if (instance.IsFirstInstance)
                 {
                     instance.ArgumentsReceived += InstanceOnArgumentsReceived;
                     instance.ListenForArgumentsFromSuccessiveInstances();
-#if EASYTEST
-            DevExpress.ExpressApp.Win.EasyTest.EasyTestRemotingRegistration.Register();
-#endif
+
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
-                    EditModelPermission.AlwaysGranted = System.Diagnostics.Debugger.IsAttached;
 
-                    string[] args = Environment.GetCommandLineArgs();
-
-                    _Application = new _2_DemoWindowsFormsApplication
+                    _Application = new DemoWindowsFormsApplication
                     {
                         ApplicationName = applicationName,
                         SplashScreen = new DevExpress.ExpressApp.Win.Utils.DXSplashScreen()
@@ -64,11 +52,7 @@ namespace XAF13_2_Demo.Win
                         InMemoryDataStoreProvider.Register();
                         _Application.ConnectionString = InMemoryDataStoreProvider.ConnectionString;
                     }
-#if EASYTEST
-            if(ConfigurationManager.ConnectionStrings["EasyTestConnectionString"] != null) {
-                winApplication.ConnectionString = ConfigurationManager.ConnectionStrings["EasyTestConnectionString"].ConnectionString;
-            }
-#endif
+
                     try
                     {
                         _Application.Setup();
@@ -109,9 +93,13 @@ namespace XAF13_2_Demo.Win
             {
                 var item = os.GetKeyValueAsString(obj);
 
+                var shortCut = new ViewShortcut(typeof(XPViewCalculationProxy), item,
+                        _Application.FindDetailViewId(typeof(XPViewCalculationProxy)));
+
                 View shortCutView =
-                    _Application.ProcessShortcut(new ViewShortcut(typeof (XPViewCalculationProxy), item,
-                        _Application.FindDetailViewId(typeof (XPViewCalculationProxy))));
+                    _Application.ProcessShortcut(shortCut);
+
+                var str = shortCut.ToString();
 
                 _Application.ShowViewStrategy.ShowView(new ShowViewParameters(shortCutView), new ShowViewSource(null, null));
             }

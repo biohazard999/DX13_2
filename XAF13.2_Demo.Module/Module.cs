@@ -6,9 +6,9 @@ using DevExpress.ExpressApp.Updating;
 namespace XAF13_2_Demo.Module
 {
     // For more typical usage scenarios, be sure to check out http://documentation.devexpress.com/#Xaf/clsDevExpressExpressAppModuleBasetopic.
-    public sealed partial class _2_DemoModule : ModuleBase
+    public sealed partial class DemoModule : ModuleBase
     {
-        public _2_DemoModule()
+        public DemoModule()
         {
             InitializeComponent();
         }

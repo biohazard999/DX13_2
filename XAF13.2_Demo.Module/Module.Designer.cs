@@ -1,6 +1,6 @@
 namespace XAF13_2_Demo.Module
 {
-    partial class _2_DemoModule
+    partial class DemoModule
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace XAF13_2_Demo.Module
         private void InitializeComponent()
         {
             // 
-            // _2_DemoModule
+            // DemoModule
             // 
             this.RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.SystemModule.SystemModule));
         }

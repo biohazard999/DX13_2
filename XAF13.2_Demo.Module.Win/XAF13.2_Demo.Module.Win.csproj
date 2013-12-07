@@ -155,6 +155,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Para.Modules.Win.TaskbarIntegration\Para.Modules.Win.TaskbarIntegration.csproj">
+      <Project>{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}</Project>
+      <Name>Para.Modules.Win.TaskbarIntegration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XAF13.2_Demo.Module\XAF13.2_Demo.Module.csproj">
       <Project>{5F15837D-D1E5-44DC-92F0-4F2EBE9C3F8D}</Project>
       <Name>XAF13.2_Demo.Module</Name>
