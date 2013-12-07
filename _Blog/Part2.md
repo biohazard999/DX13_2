@@ -1,6 +1,6 @@
 # DevExpress 13.2 Review - Part 2 #
 
-In the last review I showed only some of the new small improvements I noticed during migration, so now go to the great stuff!
+In the last review, I showed only some of the new small improvements I noticed during migration, so now go to the great stuff!
 
 ## WinForms ##
 
@@ -39,9 +39,9 @@ The Jumplist items are basically shortcuts or launch commands to applications. [
 
 Okay lets see how we can manage this:
 
-For the default Windows behavior we should use the JumpListTasksCategory. This will be localized under the different languages of the operating system. For example *Tasks* in english or *Aufgaben* in German.
+For the default Windows behavior, we should use the JumpListTasksCategory. This will be localized under the different languages of the operating system. For example *Tasks* in english or *Aufgaben* in German.
 
-We now can add custom commands to this like launching the windows calucator or notepad:
+We now can add custom commands to this like launching the windows calculator or notepad:
 
 ![](http://i.imgur.com/sGBxn70.png)
 ![](http://i.imgur.com/WgIIK1J.png)
@@ -55,7 +55,7 @@ Great! This works like a charm! But let's handle the pictures. Cause this can be
 ![](http://i.imgur.com/DFTPV6w.png)
 ![](http://i.imgur.com/3BhqrxZ.png)
 
-Lets add an icon for both applications:
+Let's add an icon for both applications:
 
 Grab a [tool](https://www.google.com/search?q=extract+icon+from+exe+&oq=extract+icon+from+exe+&aqs=chrome..69i57j69i59j0l4.4427j0j4&sourceid=chrome&espv=210&es_sm=122&ie=UTF-8) that allows you to extract an icon from an exe or use you own ico file (note it must be in the ICO-Format) (I used the freeware tool [IconExtracts from Nirsoft](http://www.nirsoft.net/))
 
@@ -69,7 +69,7 @@ Let's see the result:
 
 ![](http://i.imgur.com/Q3EK8Kk.png)
 
-That was easy, without a single line of code we have a full working jump list, this is really amazing!
+That was easy, without a single line of code we have a full working JumpList. This **is** really amazing!
 
 You also can add a custom JumpList with additional categories, it follows the same scheme but you use the `JumpListCustomCategories`:
 
@@ -86,7 +86,7 @@ Using the overlay icon you can inform your user about the current status of your
 
 ![](http://i.imgur.com/K2LU3uq.png)
 
-This is the simple API i like, DevExpress thank you for that. No pointer juggling, just a simple, clear and pure managed API.
+This is a simple API i like, DevExpress thanks for that. No pointer juggling, just a simple, clear and pure managed API.
 
 
 #### The ThumbnailButtons ####
@@ -121,23 +121,23 @@ Start the application and see if everything works as expected.
 
 ![](http://i.imgur.com/W1BJ1d4.png)
 
-And we are done! In minutes we implemented full working windows 7 (or greater) taskbar support for our application.
+And we are done! In minutes, we implemented full working windows 7 (or greater) taskbar support for our application.
 
 I'm impressed.
 
 ### Conclusion ###
 
-Never thought it was so easy to get along with this new control. No need to think about Win32 API, just get it done right. With the first try. I never used this control before and I'm really impressed how quick i got running with this. Never looked in the documentation (of course the documentation it self is very good)
+Never thought it was so easy to get along with this new control. No need to think about Win32 API, just get it done right. With the first try. I never used this control before, and I'm really impressed how quick i got running with this. Never looked in the documentation (of course the documentation it self is very good)
 
-For me it is a great proof to rely on the strengths of a manufacturer like DevExpress. When only the best will do.
+For me, it is a great proof to rely on the strengths of a manufacturer like DevExpress. When only the best will do.
 
 ## What's next? ##
 
-In the next part of the review i will show you how easy it is to integrate the TaskbarAssistent in a expressAppFramework Winforms project.
+In the next part of the review, i will show you how easy it is to integrate the TaskbarAssistent in an expressAppFramework Winforms project.
 
-Also i try to show the soft validation feature of XAF and try to cover some other features like adding custom fields and calculated fields at runtime.
+Also, i try to show the soft validation feature of XAF and try to cover some other features like adding custom fields and calculated fields at runtime.
 
 
-Of course you can follow my progress in my public [GitHub-Repository](https://github.com/biohazard999/DX13_2).
+Of course, you can follow my progress in my public [GitHub-Repository](https://github.com/biohazard999/DX13_2).
 
 Greetings, Manuel
