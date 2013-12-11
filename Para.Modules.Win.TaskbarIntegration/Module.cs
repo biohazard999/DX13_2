@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection.Emit;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Editors;
+using DevExpress.ExpressApp.Model;
 using DevExpress.ExpressApp.SystemModule;
 using DevExpress.ExpressApp.Updating;
 using DevExpress.ExpressApp.Win.SystemModule;
@@ -25,7 +28,7 @@ namespace Para.Modules.Win.TaskbarIntegration
 
         protected override IEnumerable<Type> GetDeclaredControllerTypes()
         {
-            return Type.EmptyTypes;
+            return new [] {typeof(TaskbarJumpListWindowController)};
         }
 
         protected override IEnumerable<Type> GetDeclaredExportedTypes()
@@ -38,6 +41,74 @@ namespace Para.Modules.Win.TaskbarIntegration
 
         }
 
+        public override void ExtendModelInterfaces(ModelInterfaceExtenders extenders)
+        {
+            base.ExtendModelInterfaces(extenders);
+            extenders.Add<IModelOptions, IModelTaskbarOptions>();
+        }
+    }
 
+    public interface IModelTaskbarOptions : IModelNode
+    {
+       IModelTaskbarJumplistOption TaskbarJumplistOptions { get;  }
+    }
+
+    public interface IModelTaskbarJumplistOption : IModelNode
+    {
+        bool EnableJumpList { get; set; }
+
+        IModelTaskbarJumplists Jumplists { get; }
+    }
+
+    public interface IModelTaskbarJumplists : IModelNode
+    {
+        IModelTaskbarJumplistTaskCategory TasksCategory { get; }
+
+        IModelTaskbarJumplistCustomCategories CustomCategories { get; }
+    }
+
+    public interface IModelTaskbarJumplistTaskCategory : IModelNode, IModelList<IModelTaskbarJumplistItem>
+    {
+        
+    }
+
+    public interface IModelTaskbarJumplistCustomCategories : IModelNode, IModelList<IModelTaskbarJumplistCustomCategory>
+    {
+
+    }
+
+    public interface IModelTaskbarJumplistCustomCategory : IModelNode, IModelList<IModelTaskbarJumplistItem>
+    {
+        string Caption { get; set; }
+    }
+
+    [Browsable(false)]
+    public interface IModelTaskbarJumplistItem : IModelNode
+    {
+        
+    }
+
+    public interface IModelTaskbarJumplistJumpItemBase : IModelTaskbarJumplistItem, IImageNameProvider
+    {
+        string Caption { get; set; }
+    }
+
+    public interface IModelTaskbarJumplistJumpItemLaunch : IModelTaskbarJumplistJumpItemBase
+    {
+        string PathToLaunch { get; set; }
+        string Arguments { get; set; }
+
+        string WorkingDirectory { get; set; }
+    }
+
+    public interface IModelTaskbarJumplistSeperatorItem : IModelTaskbarJumplistItem
+    {
+
+    }
+
+    public interface IImageNameProvider
+    {
+        [Editor("DevExpress.ExpressApp.Win.Core.ModelEditor.ImageGalleryModelEditorControl, DevExpress.ExpressApp.Win" + XafAssemblyInfo.VersionSuffix + XafAssemblyInfo.AssemblyNamePostfix, typeof(System.Drawing.Design.UITypeEditor))]
+        string ImageName { get; set; }
     }
 }

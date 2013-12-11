@@ -32,6 +32,7 @@
             DevExpress.Utils.Taskbar.JumpListItemTask jumpListItemTask1 = new DevExpress.Utils.Taskbar.JumpListItemTask();
             DevExpress.Utils.Taskbar.JumpListItemTask jumpListItemTask2 = new DevExpress.Utils.Taskbar.JumpListItemTask();
             DevExpress.Utils.Taskbar.JumpListItemTask jumpListItemTask3 = new DevExpress.Utils.Taskbar.JumpListItemTask();
+            DevExpress.Utils.Taskbar.JumpListItemSeparator jumpListItemSeparator1 = new DevExpress.Utils.Taskbar.JumpListItemSeparator();
             this.taskbarAssistant1 = new DevExpress.Utils.Taskbar.TaskbarAssistant();
             this.whatsNewTaskbarButton = new DevExpress.Utils.Taskbar.ThumbnailButton();
             this.helpTaskbarButton = new DevExpress.Utils.Taskbar.ThumbnailButton();
@@ -57,6 +58,7 @@
             jumpListItemTask3.Path = "calc";
             this.taskbarAssistant1.JumpListTasksCategory.Add(jumpListItemTask2);
             this.taskbarAssistant1.JumpListTasksCategory.Add(jumpListItemTask3);
+            this.taskbarAssistant1.JumpListTasksCategory.Add(jumpListItemSeparator1);
             this.taskbarAssistant1.ParentControl = this;
             this.taskbarAssistant1.ThumbnailButtons.Add(this.whatsNewTaskbarButton);
             this.taskbarAssistant1.ThumbnailButtons.Add(this.helpTaskbarButton);

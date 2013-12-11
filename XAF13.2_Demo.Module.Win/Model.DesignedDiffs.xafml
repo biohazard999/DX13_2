@@ -1,2 +1,24 @@
-﻿<?xml version="1.0" ?>
-<Application />
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Options>
+    <TaskbarJumplistOptions EnableJumpList="True">
+      <Jumplists>
+        <CustomCategories>
+          <TaskbarJumplistCustomCategory Id="Office" Caption="Office" IsNewNode="True">
+            <TaskbarJumplistJumpItemLaunch Id="Explorer" Caption="Explorer" PathToLaunch="explorer" Index="0" ImageName="Action_FileAttachment_Attach" IsNewNode="True" />
+            <TaskbarJumplistJumpItemLaunch Id="Paraoffice" Caption="Paraoffice" PathToLaunch="http://www.paraoffice.at" Index="1" ImageName="Action_Open" IsNewNode="True" />
+            <TaskbarJumplistJumpItemLaunch Id="Google" Caption="Google" PathToLaunch="http://www.google.at" ImageName="Action_SimpleAction" IsNewNode="True" />
+          </TaskbarJumplistCustomCategory>
+        </CustomCategories>
+        <TasksCategory>
+          <TaskbarJumplistJumpItemLaunch Id="Notepad" Caption="Notepad" PathToLaunch="notepad" Index="0" ImageName="Action_LocalizationImport" IsNewNode="True" />
+          <TaskbarJumplistJumpItemLaunch Id="Calculator" Caption="Calculator" PathToLaunch="calc" Index="1" ImageName="BO_Attention" IsNewNode="True" />
+        </TasksCategory>
+      </Jumplists>
+    </TaskbarJumplistOptions>
+  </Options>
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="13.2.5.0" IsNewNode="True" />
+    <SchemaModule Name="SystemWindowsFormsModule" Version="13.2.5.0" IsNewNode="True" />
+  </SchemaModules>
+</Application>
