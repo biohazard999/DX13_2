@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Model;
 using DevExpress.ExpressApp.Utils;
+using DevExpress.ExpressApp.Win;
 using DevExpress.Utils.OAuth;
 using DevExpress.Utils.Taskbar;
 using DevExpress.XtraGrid.Views.Base;
@@ -81,7 +82,7 @@ namespace Para.Modules.Win.TaskbarIntegration
 
             
             var imageNames =
-                options.Jumplists.TasksCategory.OfType<IImageNameProvider>()
+                options.Jumplists.TasksCategory.OfType<IModelTaskbarJumplistJumpItemBase>()
                     .Where(m => !String.IsNullOrEmpty(m.ImageName))
                     .Select(imageName => imageName.ImageName)
                     .ToList();
@@ -89,12 +90,13 @@ namespace Para.Modules.Win.TaskbarIntegration
             foreach (var category in options.Jumplists.CustomCategories)
             {
                 imageNames.AddRange(
-                    category.OfType<IImageNameProvider>()
+                    category.OfType<IModelTaskbarJumplistJumpItemBase>()
                         .Where(m => !String.IsNullOrEmpty(m.ImageName))
                         .Select(imageName => imageName.ImageName));
             }
 
-            var manager = new RuntimeImageResourceManager();
+            var manager = new RuntimeImageResourceManager((Application as WinApplication).UserModelDifferenceFilePath);
+            manager.AutomaticImageAssemblyName = options.AutomaticImageAssemblyName;
 
             var imageAssembly = manager.WriteImageResouces(imageNames);
             

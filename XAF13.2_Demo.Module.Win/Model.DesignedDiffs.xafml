@@ -8,15 +8,12 @@
             <TaskbarJumplistJumpItemLaunch Id="Explorer" Caption="Explorer" PathToLaunch="explorer" Index="0" ImageName="Action_FileAttachment_Attach" IsNewNode="True" />
             <TaskbarJumplistJumpItemLaunch Id="Paraoffice" Caption="Paraoffice" PathToLaunch="http://www.paraoffice.at" Index="1" ImageName="Action_Open" IsNewNode="True" />
             <TaskbarJumplistJumpItemLaunch Id="Google" Caption="Google" PathToLaunch="http://www.google.at" ImageName="Action_SimpleAction" IsNewNode="True" />
-            <TaskbarJumplistJumpItemLaunch Id="Validate" ImageName="Action_Validation_Validate" Caption="Validate" PathToLaunch="calc" IsNewNode="True" />
-          </TaskbarJumplistCustomCategory>
-          <TaskbarJumplistCustomCategory Id="Paul" Caption="Paul" IsNewNode="True">
-            <TaskbarJumplistJumpItemLaunch Id="outlook" PathToLaunch="winword" ImageName="ModelEditor_Controllers" Caption="Paul stinkt." IsNewNode="True" />
           </TaskbarJumplistCustomCategory>
         </CustomCategories>
         <TasksCategory>
           <TaskbarJumplistJumpItemLaunch Id="Notepad" Caption="Notepad" PathToLaunch="notepad" Index="0" ImageName="Action_LocalizationImport" IsNewNode="True" />
-          <TaskbarJumplistJumpItemLaunch Id="Calculator" Caption="Calculator" PathToLaunch="calc" Index="1" ImageName="BO_Attention" IsNewNode="True" />
+          <TaskbarJumplistSeperatorItem Id="@8f1d46c1-b73e-41b3-8b4f-0c50b4da0a2d" Index="1" IsNewNode="True" />
+          <TaskbarJumplistJumpItemLaunch Id="Calculator" Caption="Calculator" PathToLaunch="calc" Index="2" ImageName="BO_Attention" IsNewNode="True" />
         </TasksCategory>
       </Jumplists>
     </TaskbarJumplistOptions>

@@ -58,6 +58,9 @@ namespace Para.Modules.Win.TaskbarIntegration
         bool EnableJumpList { get; set; }
 
         IModelTaskbarJumplists Jumplists { get; }
+
+        [DefaultValue("JumplistImages.dll")]
+        string AutomaticImageAssemblyName { get; set; }
     }
 
     public interface IModelTaskbarJumplists : IModelNode
@@ -82,15 +85,19 @@ namespace Para.Modules.Win.TaskbarIntegration
         string Caption { get; set; }
     }
 
-    [Browsable(false)]
+    [ModelAbstractClass]
     public interface IModelTaskbarJumplistItem : IModelNode
     {
         
     }
 
-    public interface IModelTaskbarJumplistJumpItemBase : IModelTaskbarJumplistItem, IImageNameProvider
+    [ModelAbstractClass]
+    public interface IModelTaskbarJumplistJumpItemBase : IModelTaskbarJumplistItem
     {
         string Caption { get; set; }
+
+        [Editor("DevExpress.ExpressApp.Win.Core.ModelEditor.ImageGalleryModelEditorControl, DevExpress.ExpressApp.Win" + XafAssemblyInfo.VersionSuffix + XafAssemblyInfo.AssemblyNamePostfix, typeof(System.Drawing.Design.UITypeEditor))]
+        string ImageName { get; set; }
     }
 
     public interface IModelTaskbarJumplistJumpItemLaunch : IModelTaskbarJumplistJumpItemBase
@@ -104,11 +111,5 @@ namespace Para.Modules.Win.TaskbarIntegration
     public interface IModelTaskbarJumplistSeperatorItem : IModelTaskbarJumplistItem
     {
 
-    }
-
-    public interface IImageNameProvider
-    {
-        [Editor("DevExpress.ExpressApp.Win.Core.ModelEditor.ImageGalleryModelEditorControl, DevExpress.ExpressApp.Win" + XafAssemblyInfo.VersionSuffix + XafAssemblyInfo.AssemblyNamePostfix, typeof(System.Drawing.Design.UITypeEditor))]
-        string ImageName { get; set; }
     }
 }

@@ -15,34 +15,95 @@ namespace Para.Modules.Win.TaskbarIntegration.ResourceManagers
 {
     public class RuntimeImageResourceManager
     {
+        private readonly string _basePath;
+
         private readonly Dictionary<string, int> ImageIndexes = new Dictionary<string, int>();
+
+        public RuntimeImageResourceManager(string basePath)
+        {
+            if(string.IsNullOrEmpty(basePath))
+                basePath = Path.GetDirectoryName(typeof(TaskbarJumpListWindowController).Assembly.Location);
+            
+            _basePath = basePath;
+        }
+
+        public string AutomaticImageAssemblyName { get; set; }
 
         public string WriteImageResouces(IEnumerable<string> imageNames)
         {
-            var location = Path.GetDirectoryName(typeof(TaskbarJumpListWindowController).Assembly.Location);
-            var assemblyFileName = "AutoGen.dll";
+            var assemblyPath = GenerateAssemblyPath();
+            var compilerErrors = GenerateImageAssembly(assemblyPath);
 
-            var assemblyPath = Path.Combine(location, assemblyFileName);
+            if (compilerErrors == null)
+                return null;
 
+            var imageTempPaths = GenerateTempImages(imageNames, _basePath);
+
+            using (new FilesScope(imageTempPaths.Select(m => m.Item1)))
+            {
+                uint c = 100;
+                uint id = 1;
+
+                foreach (var fileTuple in imageTempPaths)
+                {
+                    var rc = new IconDirectoryResource();
+
+                    rc.Name = new ResourceId(c);
+                    rc.Language = GetCurrentLangId();
+
+                    var iconFile = new IconFile(fileTuple.Item1);
+
+                    foreach (var icon in iconFile.Icons)
+                    {
+                        rc.Icons.Add(new IconResource(icon, new ResourceId(id), rc.Language));
+                    }
+
+                    rc.SaveTo(assemblyPath);
+
+                    ImageIndexes[fileTuple.Item2] = Convert.ToInt32(id) - 1;
+
+                    c++;
+                    id++;
+                }
+            }
+
+            Assembly.Load(compilerErrors.CompiledAssembly.FullName);
+
+            return compilerErrors.CompiledAssembly.Location;
+        }
+
+        private CompilerResults GenerateImageAssembly(string assemblyPath)
+        {
             var codeProvider = new CSharpCodeProvider();
             var icc = codeProvider.CreateCompiler();
             var parameters = new CompilerParameters();
             parameters.GenerateExecutable = false;
-            parameters.OutputAssembly = assemblyFileName;
-
-            assemblyPath = Path.Combine(location, parameters.OutputAssembly);
-
-            CompilerResults results = icc.CompileAssemblyFromDom(parameters, new CodeCompileUnit());
+            parameters.OutputAssembly = assemblyPath;
+            
+            var results = icc.CompileAssemblyFromDom(parameters, new CodeCompileUnit());
 
             if (results.Errors.HasErrors)
                 return null;
+
+            return results;
+        }
+
+        private string GenerateAssemblyPath()
+        {
+            var assemblyPath = Path.Combine(_basePath, AutomaticImageAssemblyName);
+            return assemblyPath;
+        }
+
+        private static List<Tuple<string, string>> GenerateTempImages(IEnumerable<string> imageNames, string basePath)
+        {
+            var imageTempPaths = new List<Tuple<string, string>>();
 
             foreach (var imageName in imageNames)
             {
                 var info = ImageLoader.Instance.GetImageInfo(imageName);
                 var infoLarge = ImageLoader.Instance.GetImageInfo(imageName);
 
-                if (info == null || info.Image == null || infoLarge == null || infoLarge.Image == null)
+                if (info.Image == null || infoLarge.Image == null)
                     continue;
 
                 var writer = new IconFileWriter();
@@ -50,40 +111,13 @@ namespace Para.Modules.Win.TaskbarIntegration.ResourceManagers
                 writer.Images.Add(info.Image);
                 writer.Images.Add(infoLarge.Image);
 
-                writer.Save(imageName + ".ico");
+                var imagePath = Path.Combine(basePath, imageName + ".ico");
+
+                writer.Save(imagePath);
+
+                imageTempPaths.Add(Tuple.Create(imagePath, imageName));
             }
-
-            using (var scope = new FilesScope(imageNames.Select(m => m + ".ico")))
-            {
-                uint c = 100;
-                uint id = 1;
-
-                foreach (var file in scope.FilesNames)
-                {
-                    var rc = new IconDirectoryResource();
-
-                    rc.Name = new ResourceId(c);
-                    rc.Language = GetCurrentLangId();
-
-                    var iconFile = new IconFile(file);
-
-                    foreach (var icon in iconFile.Icons)
-                    {
-                        rc.Icons.Add(new IconResource(icon, new ResourceId(id), rc.Language));
-                    }
-
-                    rc.SaveTo(assemblyFileName);
-
-                    ImageIndexes[Path.GetFileNameWithoutExtension(file)] = Convert.ToInt32(id) - 1;
-
-                    c++;
-                    id++;
-                }
-            }
-
-            Assembly.Load(results.CompiledAssembly.FullName);
-
-            return assemblyPath;
+            return imageTempPaths;
         }
 
         public int GetImageIndex(string imageName)
