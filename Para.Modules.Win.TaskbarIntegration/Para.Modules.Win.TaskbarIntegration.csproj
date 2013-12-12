@@ -79,6 +79,9 @@
       <Name>System.XML</Name>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Vestris.ResourceLib">
+      <HintPath>..\lib\Vestris.ResourceLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentsReceivedEventArgs.cs" />
@@ -86,6 +89,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Helpers\ControlExtentions.cs" />
+    <Compile Include="Helpers\IconFileReader.cs" />
+    <Compile Include="Helpers\IconFileWriter.cs" />
+    <Compile Include="Helpers\IconStructs.cs" />
+    <Compile Include="Helpers\IIconData.cs" />
     <Compile Include="Module.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -114,11 +121,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="AddResource.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

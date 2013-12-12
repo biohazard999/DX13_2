@@ -43,18 +43,17 @@
             // 
             // taskbarAssistant1
             // 
-            this.taskbarAssistant1.IconsAssembly = "WinTaskbarDemo.exe";
+            this.taskbarAssistant1.IconsAssembly = "AutoGen.dll";
             jumpListCategory1.Caption = "DevExpress";
             jumpListItemTask1.Caption = "13.2 Rocks!";
-            jumpListItemTask1.IconIndex = 2;
             jumpListItemTask1.Path = "https://www.devexpress.com/Subscriptions/New-2013.xml";
             jumpListCategory1.JumpItems.Add(jumpListItemTask1);
             this.taskbarAssistant1.JumpListCustomCategories.Add(jumpListCategory1);
             jumpListItemTask2.Caption = "Notepad";
-            jumpListItemTask2.IconIndex = 0;
+            jumpListItemTask2.IconIndex = 1;
             jumpListItemTask2.Path = "notepad";
             jumpListItemTask3.Caption = "Calculator";
-            jumpListItemTask3.IconIndex = 1;
+            jumpListItemTask3.IconIndex = 4;
             jumpListItemTask3.Path = "calc";
             this.taskbarAssistant1.JumpListTasksCategory.Add(jumpListItemTask2);
             this.taskbarAssistant1.JumpListTasksCategory.Add(jumpListItemTask3);
@@ -77,10 +76,11 @@
             // 
             // busyCheckEdit
             // 
-            this.busyCheckEdit.Location = new System.Drawing.Point(12, 12);
+            this.busyCheckEdit.Location = new System.Drawing.Point(10, 10);
+            this.busyCheckEdit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.busyCheckEdit.Name = "busyCheckEdit";
             this.busyCheckEdit.Properties.Caption = "Busy";
-            this.busyCheckEdit.Size = new System.Drawing.Size(75, 20);
+            this.busyCheckEdit.Size = new System.Drawing.Size(64, 19);
             this.busyCheckEdit.TabIndex = 0;
             this.busyCheckEdit.CheckedChanged += new System.EventHandler(this.busyCheckEdit_CheckedChanged);
             // 
@@ -89,20 +89,20 @@
             this.webBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser1.Location = new System.Drawing.Point(12, 38);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Location = new System.Drawing.Point(10, 31);
+            this.webBrowser1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(17, 16);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(838, 493);
+            this.webBrowser1.Size = new System.Drawing.Size(718, 401);
             this.webBrowser1.TabIndex = 1;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(862, 543);
+            this.ClientSize = new System.Drawing.Size(739, 441);
             this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.busyCheckEdit);
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.busyCheckEdit.Properties)).EndInit();

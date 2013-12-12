@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <Win32Resource>C:\F\GIT\WinTaskbarDemo\WinTaskbarDemo\NativeResource.res</Win32Resource>
+    <Win32Resource>C:\f\git\DX13_2\WinTaskbarDemo\NativeResource.res</Win32Resource>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.BonusSkins.v13.2" />
