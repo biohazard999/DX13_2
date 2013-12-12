@@ -80,7 +80,7 @@ namespace Para.Modules.Win.TaskbarIntegration
             if (options == null)
                 return;
 
-            
+
             var imageNames =
                 options.Jumplists.TasksCategory.OfType<IModelTaskbarJumplistJumpItemBase>()
                     .Where(m => !String.IsNullOrEmpty(m.ImageName))
@@ -99,7 +99,7 @@ namespace Para.Modules.Win.TaskbarIntegration
             manager.AutomaticImageAssemblyName = options.AutomaticImageAssemblyName;
 
             var imageAssembly = manager.WriteImageResouces(imageNames);
-            
+
 
             TaskbarAssistant = new TaskbarAssistant();
 
@@ -123,7 +123,7 @@ namespace Para.Modules.Win.TaskbarIntegration
             TaskbarAssistant.ParentControl = (Window as DevExpress.ExpressApp.Win.WinWindow).Form;
         }
 
-     
+
         private void InitJumpList(JumpListCategoryItemCollection collection, IModelTaskbarJumplistItem item,
             RuntimeImageResourceManager manager)
         {
@@ -136,6 +136,35 @@ namespace Para.Modules.Win.TaskbarIntegration
                     Arguments = launcher.Arguments,
                     Path = launcher.PathToLaunch,
                     WorkingDirectory = launcher.WorkingDirectory,
+                    IconIndex = manager.GetImageIndex(launcher.ImageName),
+                });
+            }
+
+            if (item is IModelTaskbarJumplistJumpItemNavigationItem)
+            {
+                var launcher = item as IModelTaskbarJumplistJumpItemNavigationItem;
+
+                if (launcher.NavigationItem == null || launcher.NavigationItem.View == null)
+                    return;
+
+                var sc = new ViewShortcut(launcher.NavigationItem.View.Id, launcher.NavigationItem.ObjectKey);
+                var newArgs = sc.ToString();
+
+                var args = Environment.GetCommandLineArgs();
+                string applicationPath = null;
+
+                if (args.Length > 0)
+                    applicationPath = args[0];
+
+                if (Debugger.IsAttached)
+                {
+                    applicationPath = Application.GetType().Assembly.Location;
+                }
+
+                collection.Add(new JumpListItemTask(launcher.Caption)
+                {
+                    Arguments = newArgs,
+                    Path = applicationPath,
                     IconIndex = manager.GetImageIndex(launcher.ImageName),
                 });
             }

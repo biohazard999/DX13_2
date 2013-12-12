@@ -34,5 +34,10 @@ namespace XAF13_2_Demo.Win
             e.Updater.Update();
             e.Handled = true;
         }
+
+        protected override void ProcessStartupActions()
+        {
+            base.ProcessStartupActions();
+        }
     }
 }

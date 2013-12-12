@@ -1,13 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Reflection.Emit;
+using System.Windows.Forms;
 using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.Actions;
+using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Model;
 using DevExpress.ExpressApp.SystemModule;
 using DevExpress.ExpressApp.Updating;
+using DevExpress.ExpressApp.Win;
 using DevExpress.ExpressApp.Win.SystemModule;
+using DevExpress.Persistent.Base;
+using Para.Modules.Win.TaskbarIntegration.Helpers;
+using View = DevExpress.ExpressApp.View;
 
 namespace Para.Modules.Win.TaskbarIntegration
 {
@@ -28,7 +36,7 @@ namespace Para.Modules.Win.TaskbarIntegration
 
         protected override IEnumerable<Type> GetDeclaredControllerTypes()
         {
-            return new [] {typeof(TaskbarJumpListWindowController)};
+            return new[] { typeof(TaskbarJumpListWindowController) };
         }
 
         protected override IEnumerable<Type> GetDeclaredExportedTypes()
@@ -46,11 +54,63 @@ namespace Para.Modules.Win.TaskbarIntegration
             base.ExtendModelInterfaces(extenders);
             extenders.Add<IModelOptions, IModelTaskbarOptions>();
         }
+
+        public override IList<PopupWindowShowAction> GetStartupActions()
+        {
+
+            var args = Environment.GetCommandLineArgs();
+
+            if (args.Length >= 2)
+            {
+                DebugMode();
+
+                HandleShortCut(args[1]);
+            }
+
+            return base.GetStartupActions();
+        }
+
+        void Application_LoggedOn(object sender, LogonEventArgs e)
+        {
+
+        }
+
+        public static void InstanceOnArgumentsReceived(object sender, ArgumentsReceivedEventArgs argumentsReceivedEventArgs)
+        {
+            if (TaskbarApplication == null || !(TaskbarApplication.MainWindow is WinWindow))
+                return;
+
+            var window = TaskbarApplication.MainWindow as WinWindow;
+
+            var arguments = argumentsReceivedEventArgs.Args;
+
+            if (arguments.Length > 0)
+                window.Form.SafeInvoke(() => HandleShortCut(arguments[0]));
+        }
+
+        public static void HandleShortCut(string argument)
+        {
+            var sc = ViewShortcut.FromString(argument);
+
+            View shortCutView =
+                TaskbarApplication.ProcessShortcut(sc);
+
+            TaskbarApplication.ShowViewStrategy.ShowView(new ShowViewParameters(shortCutView), new ShowViewSource(null, null));
+
+        }
+
+        [Conditional("DEBUG")]
+        private static void DebugMode()
+        {
+            MessageBox.Show("Wait for Debugger");
+        }
+
+        public static WinApplication TaskbarApplication { get; set; }
     }
 
     public interface IModelTaskbarOptions : IModelNode
     {
-       IModelTaskbarJumplistOption TaskbarJumplistOptions { get;  }
+        IModelTaskbarJumplistOption TaskbarJumplistOptions { get; }
     }
 
     public interface IModelTaskbarJumplistOption : IModelNode
@@ -72,7 +132,7 @@ namespace Para.Modules.Win.TaskbarIntegration
 
     public interface IModelTaskbarJumplistTaskCategory : IModelNode, IModelList<IModelTaskbarJumplistItem>
     {
-        
+
     }
 
     public interface IModelTaskbarJumplistCustomCategories : IModelNode, IModelList<IModelTaskbarJumplistCustomCategory>
@@ -88,7 +148,7 @@ namespace Para.Modules.Win.TaskbarIntegration
     [ModelAbstractClass]
     public interface IModelTaskbarJumplistItem : IModelNode
     {
-        
+
     }
 
     [ModelAbstractClass]
@@ -106,6 +166,34 @@ namespace Para.Modules.Win.TaskbarIntegration
         string Arguments { get; set; }
 
         string WorkingDirectory { get; set; }
+    }
+
+    public interface IModelTaskbarJumplistJumpItemNavigationItem : IModelTaskbarJumplistJumpItemBase
+    {
+        [DataSourceProperty("Application.NavigationItems.AllItems")]
+        IModelNavigationItem NavigationItem { get; set; }
+    }
+
+    [DomainLogic(typeof(IModelTaskbarJumplistJumpItemNavigationItem))]
+    public static class ModelTaskbarJumplistJumpItemNavigationItem_Logic
+    {
+        public static string Get_Caption(IModelTaskbarJumplistJumpItemNavigationItem item)
+        {
+            if (item == null)
+                return null;
+            if (item.NavigationItem != null)
+                return item.NavigationItem.Caption;
+            return null;
+        }
+
+        public static string Get_ImageName(IModelTaskbarJumplistJumpItemNavigationItem item)
+        {
+            if (item == null)
+                return null;
+            if (item.NavigationItem != null)
+                return item.NavigationItem.ImageName;
+            return null;
+        }
     }
 
     public interface IModelTaskbarJumplistSeperatorItem : IModelTaskbarJumplistItem

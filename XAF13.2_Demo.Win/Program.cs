@@ -31,7 +31,7 @@ namespace XAF13_2_Demo.Win
             {
                 if (instance.IsFirstInstance)
                 {
-                    instance.ArgumentsReceived += InstanceOnArgumentsReceived;
+                    instance.ArgumentsReceived += TaskbarIntegrationWindowsFormsModule.InstanceOnArgumentsReceived;
                     instance.ListenForArgumentsFromSuccessiveInstances();
 
                     Application.EnableVisualStyles();
@@ -42,6 +42,8 @@ namespace XAF13_2_Demo.Win
                         ApplicationName = applicationName,
                         SplashScreen = new DevExpress.ExpressApp.Win.Utils.DXSplashScreen()
                     };
+
+                    TaskbarIntegrationWindowsFormsModule.TaskbarApplication = _Application;
 
                     if (ConfigurationManager.ConnectionStrings["ConnectionString"] != null)
                     {
@@ -57,6 +59,7 @@ namespace XAF13_2_Demo.Win
                     try
                     {
                         _Application.Setup();
+
                         _Application.Start();
                     }
                     catch (Exception e)
@@ -72,38 +75,6 @@ namespace XAF13_2_Demo.Win
 
         }
 
-        private static void InstanceOnArgumentsReceived(object sender, ArgumentsReceivedEventArgs argumentsReceivedEventArgs)
-        {
-            if (_Application == null || !(_Application.MainWindow is WinWindow))
-                return;
-
-            var window = _Application.MainWindow as WinWindow;
-
-            var arguments = argumentsReceivedEventArgs.Args;
-
-            window.Form.SafeInvoke(() => HandleShortCut(arguments));
-        }
-
-        private static void HandleShortCut(string[] arguments)
-        {
-            var os = _Application.CreateObjectSpace(typeof (XPViewCalculationProxy));
-
-            var obj = os.FindObject<XPViewCalculationProxy>(CriteriaOperator.Parse("SumMode == ?", arguments[0]));
-
-            if (obj != null)
-            {
-                var item = os.GetKeyValueAsString(obj);
-
-                var shortCut = new ViewShortcut(typeof(XPViewCalculationProxy), item,
-                        _Application.FindDetailViewId(typeof(XPViewCalculationProxy)));
-
-                View shortCutView =
-                    _Application.ProcessShortcut(shortCut);
-
-                var str = shortCut.ToString();
-
-                _Application.ShowViewStrategy.ShowView(new ShowViewParameters(shortCutView), new ShowViewSource(null, null));
-            }
-        }
+     
     }
 }
