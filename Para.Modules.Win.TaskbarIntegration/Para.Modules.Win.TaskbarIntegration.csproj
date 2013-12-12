@@ -89,10 +89,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Helpers\ControlExtentions.cs" />
-    <Compile Include="Helpers\IconFileReader.cs" />
-    <Compile Include="Helpers\IconFileWriter.cs" />
-    <Compile Include="Helpers\IconStructs.cs" />
-    <Compile Include="Helpers\IIconData.cs" />
     <Compile Include="Module.cs">
       <SubType>Component</SubType>
     </Compile>
