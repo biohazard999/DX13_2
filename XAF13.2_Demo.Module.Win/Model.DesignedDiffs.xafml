@@ -8,6 +8,10 @@
             <TaskbarJumplistJumpItemLaunch Id="Explorer" Caption="Explorer" PathToLaunch="explorer" Index="0" ImageName="Action_FileAttachment_Attach" IsNewNode="True" />
             <TaskbarJumplistJumpItemLaunch Id="Paraoffice" Caption="Paraoffice" PathToLaunch="http://www.paraoffice.at" Index="1" ImageName="Action_Open" IsNewNode="True" />
             <TaskbarJumplistJumpItemLaunch Id="Google" Caption="Google" PathToLaunch="http://www.google.at" ImageName="Action_SimpleAction" IsNewNode="True" />
+            <TaskbarJumplistJumpItemLaunch Id="Validate" ImageName="Action_Validation_Validate" Caption="Validate" PathToLaunch="calc" IsNewNode="True" />
+          </TaskbarJumplistCustomCategory>
+          <TaskbarJumplistCustomCategory Id="Paul" Caption="Paul" IsNewNode="True">
+            <TaskbarJumplistJumpItemLaunch Id="outlook" PathToLaunch="winword" ImageName="ModelEditor_Controllers" Caption="Paul stinkt." IsNewNode="True" />
           </TaskbarJumplistCustomCategory>
         </CustomCategories>
         <TasksCategory>

@@ -7,6 +7,7 @@ using DevExpress.ExpressApp.Security;
 using DevExpress.ExpressApp.Win;
 using DevExpress.ExpressApp.Xpo;
 using Para.Modules.Win.TaskbarIntegration;
+using Para.Modules.Win.TaskbarIntegration.Helpers;
 using XAF13_2_Demo.Module.BusinessObjects;
 using View = DevExpress.ExpressApp.View;
 

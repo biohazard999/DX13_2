@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Para.Modules.Win.TaskbarIntegration
+namespace Para.Modules.Win.TaskbarIntegration.Helpers
 {
     public static class ControlExtentions
     {

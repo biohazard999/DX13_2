@@ -22,7 +22,8 @@ using DevExpress.Utils.OAuth;
 using DevExpress.Utils.Taskbar;
 using DevExpress.XtraGrid.Views.Base;
 using Microsoft.CSharp;
-using Romy.Core;
+using Para.Modules.Win.TaskbarIntegration.Helpers;
+using Para.Modules.Win.TaskbarIntegration.ResourceManagers;
 using Vestris.ResourceLib;
 
 namespace Para.Modules.Win.TaskbarIntegration
@@ -93,18 +94,18 @@ namespace Para.Modules.Win.TaskbarIntegration
                         .Select(imageName => imageName.ImageName));
             }
 
-            var imageAssembly = WriteImageResouces(imageNames);
+            var manager = new RuntimeImageResourceManager();
+
+            var imageAssembly = manager.WriteImageResouces(imageNames);
             
 
             TaskbarAssistant = new TaskbarAssistant();
-            
 
             TaskbarAssistant.IconsAssembly = imageAssembly;
 
-
             foreach (var item in options.Jumplists.TasksCategory.OrderBy(m => m.Index))
             {
-                InitJumpList(TaskbarAssistant.JumpListTasksCategory, item, imageNames);
+                InitJumpList(TaskbarAssistant.JumpListTasksCategory, item, manager);
             }
 
             foreach (var itemCategory in options.Jumplists.CustomCategories.OrderBy(m => m.Index))
@@ -112,7 +113,7 @@ namespace Para.Modules.Win.TaskbarIntegration
                 var category = new JumpListCategory(itemCategory.Caption);
 
                 foreach (var item in itemCategory)
-                    InitJumpList(category.JumpItems, item, imageNames);
+                    InitJumpList(category.JumpItems, item, manager);
 
                 TaskbarAssistant.JumpListCustomCategories.Add(category);
             }
@@ -120,102 +121,9 @@ namespace Para.Modules.Win.TaskbarIntegration
             TaskbarAssistant.ParentControl = (Window as DevExpress.ExpressApp.Win.WinWindow).Form;
         }
 
-        private readonly Dictionary<string, int> ImageIndexes = new Dictionary<string, int>();
-
-        private string WriteImageResouces(IEnumerable<string> imageNames)
-        {
-            var location = Path.GetDirectoryName(typeof(TaskbarJumpListWindowController).Assembly.Location);
-            var assemblyFileName = "AutoGen.dll";
-            
-            var assemblyPath = Path.Combine(location, assemblyFileName);
-            
-            var codeProvider = new CSharpCodeProvider();
-            var icc = codeProvider.CreateCompiler();
-            var parameters = new CompilerParameters();
-            parameters.GenerateExecutable = false;
-            parameters.OutputAssembly = assemblyFileName;
-
-            assemblyPath = Path.Combine(location, parameters.OutputAssembly);
-
-            CompilerResults results = icc.CompileAssemblyFromDom(parameters, new CodeCompileUnit());
-
-            if (results.Errors.HasErrors)
-                return null;
-
-            foreach (var imageName in imageNames)
-            {
-                var info = ImageLoader.Instance.GetImageInfo(imageName);
-                var infoLarge = ImageLoader.Instance.GetImageInfo(imageName);
-
-                if (info == null || info.Image == null || infoLarge == null || infoLarge.Image == null)
-                    continue;
-
-                var writer = new IconFileWriter();
-
-                writer.Images.Add(info.Image);
-                writer.Images.Add(infoLarge.Image);
-
-                writer.Save(imageName + ".ico");
-            }
-
-            using (var scope = new FilesScope(imageNames.Select(m => m + ".ico")))
-            {
-                uint c = 100;
-                uint id = 1;
-                    
-                foreach (var file in scope.FilesNames)
-                {
-                    var rc = new IconDirectoryResource();
-                    
-                    rc.Name = new ResourceId(c);
-                    rc.Language = GetCurrentLangId();
-
-                    var iconFile = new IconFile(file);
-
-                    foreach (var icon in iconFile.Icons)
-                    {
-                        rc.Icons.Add(new IconResource(icon, new ResourceId(id), rc.Language));
-                    }
-
-                    rc.SaveTo(assemblyFileName);
-                    
-                    ImageIndexes[Path.GetFileNameWithoutExtension(file)] = Convert.ToInt32(id) -1;
-
-                    c++;
-                    id++;
-                }
-            }
-
-            Assembly.Load(results.CompiledAssembly.FullName);
-
-            return assemblyPath;
-        }
-
-        private ushort GetCurrentLangId()
-        {
-            CultureInfo currentCulture = CultureInfo.CurrentCulture;
-            int pid = PRIMARYLANGID(currentCulture.LCID);
-            int sid = SUBLANGID(currentCulture.LCID);
-            return (ushort)MAKELANGID(pid, sid);
-        }
-
-        public static int MAKELANGID(int primary, int sub)
-        {
-            return (((ushort)sub) << 10) | ((ushort)primary);
-        }
-
-        public static int PRIMARYLANGID(int lcid)
-        {
-            return ((ushort)lcid) & 0x3ff;
-        }
-
-        public static int SUBLANGID(int lcid)
-        {
-            return ((ushort)lcid) >> 10;
-        }
-
+     
         private void InitJumpList(JumpListCategoryItemCollection collection, IModelTaskbarJumplistItem item,
-            List<string> imageNames)
+            RuntimeImageResourceManager manager)
         {
             if (item is IModelTaskbarJumplistJumpItemLaunch)
             {
@@ -226,7 +134,7 @@ namespace Para.Modules.Win.TaskbarIntegration
                     Arguments = launcher.Arguments,
                     Path = launcher.PathToLaunch,
                     WorkingDirectory = launcher.WorkingDirectory,
-                    IconIndex = imageNames.IndexOf(launcher.ImageName),
+                    IconIndex = manager.GetImageIndex(launcher.ImageName),
                 });
             }
 
@@ -247,61 +155,6 @@ namespace Para.Modules.Win.TaskbarIntegration
             }
             if (Window != null)
                 Window.TemplateChanged -= Window_TemplateChanged;
-        }
-    }
-
-    public class FilesScope : IDisposable
-    {
-        private readonly List<FileScope> _scopes = new List<FileScope>();
-
-        public FilesScope(IEnumerable<string> files)
-        {
-            foreach (var file in files)
-            {
-                _scopes.Add(new FileScope(file));
-            }
-        }
-
-        public IEnumerable<string> FilesNames
-        {
-            get { return _scopes.Select(m => m.FileName); }
-        }
-
-        public void Dispose()
-        {
-            foreach (var fileScope in _scopes)
-            {
-                fileScope.Dispose();
-            }
-        }
-    }
-
-
-    public class FileScope : IDisposable
-    {
-        private readonly string _FileName;
-
-        public FileScope(string fileName)
-        {
-            _FileName = fileName;
-        }
-
-        public string FileName
-        {
-            get { return _FileName; }
-        }
-
-        public void Dispose()
-        {
-            try
-            {
-                //if (File.Exists(FileName))
-                //    File.Delete(FileName);
-            }
-            catch
-            {
-
-            }
         }
     }
 }

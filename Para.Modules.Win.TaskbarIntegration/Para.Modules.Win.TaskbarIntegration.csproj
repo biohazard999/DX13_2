@@ -89,10 +89,18 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Helpers\ControlExtentions.cs" />
+    <Compile Include="Helpers\FileScope.cs" />
+    <Compile Include="Helpers\FilesScope.cs" />
+    <Compile Include="Helpers\IconEntry.cs" />
+    <Compile Include="Helpers\IconFileWriter.cs" />
+    <Compile Include="Helpers\IconHeader.cs" />
+    <Compile Include="Helpers\IIconData.cs" />
+    <Compile Include="Helpers\ImageExtensions.cs" />
     <Compile Include="Module.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceManagers\RuntimeImageResourceManager.cs" />
     <Compile Include="SingleInstance.cs" />
     <Compile Include="TaskbarJumpListWindowController.cs">
       <SubType>Component</SubType>
