@@ -1,4 +1,3 @@
-using Para.Modules.Win.CustomUriProtocols;
 using Para.Modules.Win.TaskbarIntegration;
 
 namespace XAF13_2_Demo.Module.Win
@@ -36,7 +35,6 @@ namespace XAF13_2_Demo.Module.Win
             // 
             this.RequiredModuleTypes.Add(typeof(DemoModule));
             this.RequiredModuleTypes.Add(typeof(TaskbarIntegrationWindowsFormsModule));
-            this.RequiredModuleTypes.Add(typeof(CustomUriProtocolsWindowsFormsModule));
             this.RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.Win.SystemModule.SystemWindowsFormsModule));
 
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.Deployment.Application;
 using System.Windows.Forms;
 using DevExpress.ExpressApp.Win;
 using DevExpress.ExpressApp.Xpo;
@@ -15,8 +16,10 @@ namespace XAF13_2_Demo.Win
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(params string[] arguments)
+        static void Main()
         {
+            MessageBox.Show("Wait for debugger");
+
             const string applicationName = "XAF13.2_Demo";
 
             var guid = new Guid("B3F684D7-4CE8-471D-8E56-61BCC274EAA5");
@@ -26,6 +29,7 @@ namespace XAF13_2_Demo.Win
                 if (instance.IsFirstInstance)
                 {
                     instance.ArgumentsReceived += TaskbarIntegrationWindowsFormsModule.InstanceOnArgumentsReceived;
+
                     instance.ListenForArgumentsFromSuccessiveInstances();
 
                     Application.EnableVisualStyles();
@@ -63,12 +67,13 @@ namespace XAF13_2_Demo.Win
                 }
                 else
                 {
-                    instance.PassArgumentsToFirstInstance(arguments);
+                    
+                        instance.PassArgumentsToFirstInstance();
                 }
             }
 
         }
 
-     
+
     }
 }

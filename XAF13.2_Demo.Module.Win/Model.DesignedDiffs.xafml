@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application>
   <Options UIType="TabbedMDI">
-    <CustomProtocolOptions ProtocolName="myApp" ProtocolDescription="myApp Protocol" EnableProtocols="True" />
-    <TaskbarJumplistOptions EnableJumpList="True">
+    <CustomProtocolOptions EnableProtocols="True" ProtocolName="myApp1" />
+    <TaskbarJumplistOptions NavigationItemJumplistArgumentName="view:" EnableJumpList="True">
       <Jumplists>
         <TasksCategory>
-          <TaskbarJumplistJumpItemNavigationItem Id="@26855916-b798-4ee5-bd73-4abb5c2fcf21" NavigationItem="XPViewCalculationProxy_ListView" Index="1" IsNewNode="True" />
+          <TaskbarJumplistJumpItemNavigationItem Id="@ef6df266-3440-4225-8e80-e469172203a8" NavigationItem="XPViewCalculationProxy_ListView" IsNewNode="True" />
         </TasksCategory>
       </Jumplists>
     </TaskbarJumplistOptions>

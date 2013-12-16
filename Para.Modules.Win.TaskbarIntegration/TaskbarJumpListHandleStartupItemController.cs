@@ -19,17 +19,17 @@ namespace Para.Modules.Win.TaskbarIntegration
             var controller = Window.GetController<ShowNavigationItemController>();
             ShowStartupNavigationItem(controller);
         }
+
         protected virtual void ShowStartupNavigationItem(ShowNavigationItemController controller)
         {
-            var args = Environment.GetCommandLineArgs();
+            var args = SingleInstance.Arguments;
 
-            if (args.Length >= 2)
+            if (args.Length > 0)
             {
-                var arg = TaskbarIntegrationWindowsFormsModule.CleanUriProtocols(args[1]);
-                var sc = ViewShortcut.FromString(arg);
+                var sc = TaskbarIntegrationWindowsFormsModule.CreateViewShortcutFromArguments(args[0]);
 
                 var item = new ChoiceActionItem("CommandLineArgument", sc);
-                controller.ShowNavigationItemAction.DoExecute(item);
+                controller.ShowNavigationItemAction.DoExecute(item);    
             }
         }
 

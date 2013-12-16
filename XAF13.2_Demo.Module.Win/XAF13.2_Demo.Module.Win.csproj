@@ -152,10 +152,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Para.Modules.Win.CustomUriProtocols\Para.Modules.Win.CustomUriProtocols.csproj">
-      <Project>{87685cdc-7975-4e5d-9232-96b1b3b15748}</Project>
-      <Name>Para.Modules.Win.CustomUriProtocols</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Para.Modules.Win.TaskbarIntegration\Para.Modules.Win.TaskbarIntegration.csproj">
       <Project>{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}</Project>
       <Name>Para.Modules.Win.TaskbarIntegration</Name>

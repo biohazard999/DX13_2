@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Deployment.Application;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Web;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Win;
 using DevExpress.Utils.Taskbar;
+using Microsoft.Win32;
 using Para.Modules.Win.TaskbarIntegration.Model;
 using Para.Modules.Win.TaskbarIntegration.ResourceManagers;
 
@@ -41,37 +46,6 @@ namespace Para.Modules.Win.TaskbarIntegration
                     return null;
 
                 return (Application.Model.Options as IModelTaskbarOptions).TaskbarJumplistOptions;
-            }
-        }
-
-        private bool CustomProtocolsUsed
-        {
-            get
-            {
-                if (Application == null || Application.Model == null || Application.Model.Options == null)
-                    return false;
-
-                var optionsProtocol = Application.Model.Options as IModelCustomProtocolOptions;
-
-                if(optionsProtocol == null || optionsProtocol.CustomProtocolOptions == null)
-                    return false;
-
-                return optionsProtocol.CustomProtocolOptions.EnableProtocols;
-            }
-        }
-        private string CustomProtocol
-        {
-            get
-            {
-                if (Application == null || Application.Model == null || Application.Model.Options == null)
-                    return null;
-
-                var optionsProtocol = Application.Model.Options as IModelCustomProtocolOptions;
-
-                if (optionsProtocol == null || optionsProtocol.CustomProtocolOptions == null)
-                    return null;
-
-                return optionsProtocol.CustomProtocolOptions.ProtocolName;
             }
         }
 
@@ -155,15 +129,10 @@ namespace Para.Modules.Win.TaskbarIntegration
                 if (launcher.NavigationItem == null || launcher.NavigationItem.View == null)
                     return;
 
-                var sc = new ViewShortcut(launcher.NavigationItem.View.Id, launcher.NavigationItem.ObjectKey);
-                var newArgs = sc.ToString();
-
-                var arguments = BuildCommandLinePath(newArgs);
-
                 collection.Add(new JumpListItemTask(launcher.Caption)
                 {
-                    Arguments = arguments.Item2,
-                    Path = arguments.Item1,
+                    Arguments = launcher.Arguments,
+                    Path = launcher.Executable,
                     IconIndex = manager.GetImageIndex(launcher.ImageName),
                 });
             }
@@ -174,24 +143,7 @@ namespace Para.Modules.Win.TaskbarIntegration
             }
         }
 
-        private Tuple<string, string> BuildCommandLinePath(string args)
-        {
-            if (CustomProtocolsUsed)
-            {
-                var protocol = CustomProtocol;
-                if (!string.IsNullOrEmpty(protocol))
-                    return Tuple.Create(protocol + "://" + args, string.Empty);
-            }
 
-            string applicationPath = TaskbarIntegrationWindowsFormsModule.ExecutablePath;
-
-            if (Debugger.IsAttached)
-            {
-                applicationPath = Application.GetType().Assembly.Location;
-            }
-
-            return Tuple.Create(applicationPath, args);
-        }
 
         public TaskbarAssistant TaskbarAssistant { get; set; }
 
