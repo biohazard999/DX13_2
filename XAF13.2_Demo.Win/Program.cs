@@ -1,15 +1,9 @@
 using System;
 using System.Configuration;
 using System.Windows.Forms;
-using DevExpress.Data.Filtering;
-using DevExpress.ExpressApp;
-using DevExpress.ExpressApp.Security;
 using DevExpress.ExpressApp.Win;
 using DevExpress.ExpressApp.Xpo;
 using Para.Modules.Win.TaskbarIntegration;
-using Para.Modules.Win.TaskbarIntegration.Helpers;
-using XAF13_2_Demo.Module.BusinessObjects;
-using View = DevExpress.ExpressApp.View;
 
 namespace XAF13_2_Demo.Win
 {

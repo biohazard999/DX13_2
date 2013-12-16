@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection.Emit;
-using System.Windows.Forms;
+using System.Drawing.Design;
 using DevExpress.ExpressApp;
-using DevExpress.ExpressApp.Actions;
 using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Model;
@@ -36,7 +33,11 @@ namespace Para.Modules.Win.TaskbarIntegration
 
         protected override IEnumerable<Type> GetDeclaredControllerTypes()
         {
-            return new[] { typeof(TaskbarJumpListWindowController) };
+            return new[]
+            {
+                typeof(TaskbarJumpListWindowController),
+                typeof(TaskbarJumpListHandleStartupItemController),
+            };
         }
 
         protected override IEnumerable<Type> GetDeclaredExportedTypes()
@@ -53,26 +54,6 @@ namespace Para.Modules.Win.TaskbarIntegration
         {
             base.ExtendModelInterfaces(extenders);
             extenders.Add<IModelOptions, IModelTaskbarOptions>();
-        }
-
-        public override IList<PopupWindowShowAction> GetStartupActions()
-        {
-
-            var args = Environment.GetCommandLineArgs();
-
-            if (args.Length >= 2)
-            {
-                DebugMode();
-
-                HandleShortCut(args[1]);
-            }
-
-            return base.GetStartupActions();
-        }
-
-        void Application_LoggedOn(object sender, LogonEventArgs e)
-        {
-
         }
 
         public static void InstanceOnArgumentsReceived(object sender, ArgumentsReceivedEventArgs argumentsReceivedEventArgs)
@@ -97,12 +78,6 @@ namespace Para.Modules.Win.TaskbarIntegration
 
             TaskbarApplication.ShowViewStrategy.ShowView(new ShowViewParameters(shortCutView), new ShowViewSource(null, null));
 
-        }
-
-        [Conditional("DEBUG")]
-        private static void DebugMode()
-        {
-            MessageBox.Show("Wait for Debugger");
         }
 
         public static WinApplication TaskbarApplication { get; set; }
@@ -156,7 +131,7 @@ namespace Para.Modules.Win.TaskbarIntegration
     {
         string Caption { get; set; }
 
-        [Editor("DevExpress.ExpressApp.Win.Core.ModelEditor.ImageGalleryModelEditorControl, DevExpress.ExpressApp.Win" + XafAssemblyInfo.VersionSuffix + XafAssemblyInfo.AssemblyNamePostfix, typeof(System.Drawing.Design.UITypeEditor))]
+        [Editor("DevExpress.ExpressApp.Win.Core.ModelEditor.ImageGalleryModelEditorControl, DevExpress.ExpressApp.Win" + XafAssemblyInfo.VersionSuffix + XafAssemblyInfo.AssemblyNamePostfix, typeof(UITypeEditor))]
         string ImageName { get; set; }
     }
 

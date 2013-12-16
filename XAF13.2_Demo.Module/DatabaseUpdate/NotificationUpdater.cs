@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.Security.Strategy;
 using DevExpress.ExpressApp.Updating;
 
 namespace XAF13_2_Demo.Module.DatabaseUpdate
@@ -24,6 +23,27 @@ namespace XAF13_2_Demo.Module.DatabaseUpdate
         {
             UpdateStatus("DBUpdater", "UpdateDatabaseAfterUpdateSchema", "After updating the schema");
             base.UpdateDatabaseAfterUpdateSchema();
+
+            var role = ObjectSpace.FindObject<SecuritySystemRole>(CriteriaOperator.Parse("Name == ?", "Administrators"));
+            
+            if (role == null)
+            {
+                role = ObjectSpace.CreateObject<SecuritySystemRole>();
+                role.Name = "Administrators";
+                role.IsAdministrative = true;
+
+                ObjectSpace.CommitChanges();
+            }
+
+            var user = ObjectSpace.FindObject<SecuritySystemUser>(CriteriaOperator.Parse("UserName == ?", "Administrator"));
+            if (user == null)
+            {
+                user = ObjectSpace.CreateObject<SecuritySystemUser>();
+                user.UserName = "Administrator";
+
+                user.Roles.Add(role);
+                ObjectSpace.CommitChanges();
+            }
         }
     }
 }

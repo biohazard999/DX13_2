@@ -1,31 +1,10 @@
 ﻿using System;
-using System.CodeDom;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.SqlTypes;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Net.Configuration;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using DevExpress.ExpressApp;
-using DevExpress.ExpressApp.Model;
-using DevExpress.ExpressApp.Utils;
 using DevExpress.ExpressApp.Win;
-using DevExpress.Utils.OAuth;
 using DevExpress.Utils.Taskbar;
-using DevExpress.XtraGrid.Views.Base;
-using Microsoft.CSharp;
-using Para.Modules.Win.TaskbarIntegration.Helpers;
 using Para.Modules.Win.TaskbarIntegration.ResourceManagers;
-using Vestris.ResourceLib;
 
 namespace Para.Modules.Win.TaskbarIntegration
 {
@@ -120,7 +99,7 @@ namespace Para.Modules.Win.TaskbarIntegration
                 TaskbarAssistant.JumpListCustomCategories.Add(category);
             }
 
-            TaskbarAssistant.ParentControl = (Window as DevExpress.ExpressApp.Win.WinWindow).Form;
+            TaskbarAssistant.ParentControl = (Window as WinWindow).Form;
         }
 
 

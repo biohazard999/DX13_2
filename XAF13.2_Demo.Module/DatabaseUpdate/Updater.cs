@@ -3,7 +3,6 @@
 //using DevExpress.ExpressApp.Security.Strategy;
 //using XAF13._2_Demo.Module.BusinessObjects;
 using System;
-using System.Diagnostics;
 using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Updating;

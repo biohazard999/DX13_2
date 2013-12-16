@@ -21,7 +21,7 @@ namespace Para.Modules.Win.TaskbarIntegration
         /// <param name="identifier">An identifier unique to this application.</param>
         public SingleInstance(Guid identifier)
         {
-            this._Identifier = identifier;
+            _Identifier = identifier;
             _Mutex = new Mutex(true, identifier.ToString(), out _OwnsMutex);
         }
 

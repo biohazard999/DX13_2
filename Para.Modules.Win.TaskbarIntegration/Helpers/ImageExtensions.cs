@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Para.Modules.Win.TaskbarIntegration.Helpers
 
         internal static ImageCodecInfo JpegEncoder
         {
-            get { return ImageExtensions.jpegEncoder.Value; }
+            get { return jpegEncoder.Value; }
         }
 
         #region CopyImage
@@ -45,9 +46,9 @@ namespace Para.Modules.Win.TaskbarIntegration.Helpers
 
                 using (var graphics = Graphics.FromImage(result))
                 {
-                    graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                    graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    graphics.CompositingQuality = CompositingQuality.HighQuality;
 
                     graphics.DrawImage(image, 0, 0, result.Width, result.Height);
                 }
@@ -97,9 +98,9 @@ namespace Para.Modules.Win.TaskbarIntegration.Helpers
 
                 using (var g = Graphics.FromImage(bmp))
                 {
-                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                    g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+                    g.CompositingQuality = CompositingQuality.HighQuality;
                     g.DrawImage(image, 0, 0, width, height);
                 }
 

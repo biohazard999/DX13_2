@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using DevExpress.ExpressApp.Model;
+﻿using DevExpress.ExpressApp.Model;
 using DevExpress.Persistent.Base;
 using DevExpress.Xpo;
 using XAF13_2_Demo.Module.Helpers;
-using XAF13_2_Demo.Module.Properties;
 
 namespace XAF13_2_Demo.Module.BusinessObjects
 {

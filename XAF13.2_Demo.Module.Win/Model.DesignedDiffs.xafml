@@ -1,20 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application>
-  <Options>
+  <Options UIType="TabbedMDI">
     <TaskbarJumplistOptions EnableJumpList="True">
       <Jumplists>
-        <CustomCategories>
-          <TaskbarJumplistCustomCategory Id="Office" Caption="Office" IsNewNode="True">
-            <TaskbarJumplistJumpItemLaunch Id="Explorer" Caption="Explorer" PathToLaunch="explorer" Index="0" ImageName="Action_FileAttachment_Attach" IsNewNode="True" />
-            <TaskbarJumplistJumpItemLaunch Id="Paraoffice" Caption="Paraoffice" PathToLaunch="http://www.paraoffice.at" Index="1" ImageName="Action_Open" IsNewNode="True" />
-            <TaskbarJumplistJumpItemLaunch Id="Google" Caption="Google" PathToLaunch="http://www.google.at" ImageName="Action_SimpleAction" IsNewNode="True" />
-          </TaskbarJumplistCustomCategory>
-        </CustomCategories>
         <TasksCategory>
-          <TaskbarJumplistJumpItemLaunch Id="Notepad" Caption="Notepad" PathToLaunch="notepad" Index="0" ImageName="Action_LocalizationImport" IsNewNode="True" />
-          <TaskbarJumplistSeperatorItem Id="@8f1d46c1-b73e-41b3-8b4f-0c50b4da0a2d" Index="1" IsNewNode="True" />
-          <TaskbarJumplistJumpItemLaunch Id="Calculator" Caption="Calculator" PathToLaunch="calc" Index="2" ImageName="BO_Attention" IsNewNode="True" />
-          <TaskbarJumplistJumpItemNavigationItem Id="@da48d221-a689-475f-9441-83d6716d3c20" NavigationItem="XPViewCalculationProxy_ListView" IsNewNode="True" />
+          <TaskbarJumplistJumpItemNavigationItem Id="@26855916-b798-4ee5-bd73-4abb5c2fcf21" NavigationItem="XPViewCalculationProxy_ListView" Index="1" IsNewNode="True" />
         </TasksCategory>
       </Jumplists>
     </TaskbarJumplistOptions>
