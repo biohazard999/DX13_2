@@ -57,7 +57,6 @@
     <Reference Include="DevExpress.Utils.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraEditors.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraGrid.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System">
       <Name>System</Name>
       <Private>False</Private>
@@ -85,6 +84,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentsReceivedEventArgs.cs" />
+    <Compile Include="ModelCustomProtocolOption_Logic.cs" />
+    <Compile Include="ModelTaskbarJumplistJumpItemNavigationItem_Logic.cs" />
+    <Compile Include="Model\IModelCustomProtocolOption.cs" />
+    <Compile Include="Model\IModelCustomProtocolOptions.cs" />
+    <Compile Include="Model\IModelTaskbarJumplistCustomCategories.cs" />
+    <Compile Include="Model\IModelTaskbarJumplistCustomCategory.cs" />
+    <Compile Include="Model\IModelTaskbarJumplistItem.cs" />
+    <Compile Include="Model\IModelTaskbarJumplistJumpItemBase.cs" />
+    <Compile Include="Model\IModelTaskbarJumplistJumpItemLaunch.cs" />
+    <Compile Include="Model\IModelTaskbarJumplistJumpItemNavigationItem.cs" />
+    <Compile Include="Model\IModelTaskbarJumplistOption.cs" />
+    <Compile Include="Model\IModelTaskbarJumplists.cs" />
+    <Compile Include="Model\IModelTaskbarJumplistSeperatorItem.cs" />
+    <Compile Include="Model\IModelTaskbarJumplistTaskCategory.cs" />
+    <Compile Include="Model\IModelTaskbarOptions.cs" />
     <Compile Include="TaskbarJumpListHandleStartupItemController.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -96,7 +110,7 @@
     <Compile Include="Helpers\IconHeader.cs" />
     <Compile Include="Helpers\IIconData.cs" />
     <Compile Include="Helpers\ImageExtensions.cs" />
-    <Compile Include="Module.cs">
+    <Compile Include="TaskbarIntegrationWindowsFormsModule.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

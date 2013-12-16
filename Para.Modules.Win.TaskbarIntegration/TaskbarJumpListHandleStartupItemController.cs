@@ -25,7 +25,8 @@ namespace Para.Modules.Win.TaskbarIntegration
 
             if (args.Length >= 2)
             {
-                var sc = ViewShortcut.FromString(args[1]);
+                var arg = TaskbarIntegrationWindowsFormsModule.CleanUriProtocols(args[1]);
+                var sc = ViewShortcut.FromString(arg);
 
                 var item = new ChoiceActionItem("CommandLineArgument", sc);
                 controller.ShowNavigationItemAction.DoExecute(item);

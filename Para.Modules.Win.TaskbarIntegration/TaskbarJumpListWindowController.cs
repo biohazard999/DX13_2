@@ -4,6 +4,7 @@ using System.Linq;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Win;
 using DevExpress.Utils.Taskbar;
+using Para.Modules.Win.TaskbarIntegration.Model;
 using Para.Modules.Win.TaskbarIntegration.ResourceManagers;
 
 namespace Para.Modules.Win.TaskbarIntegration
@@ -29,9 +30,7 @@ namespace Para.Modules.Win.TaskbarIntegration
         {
             get
             {
-                if (Application == null)
-                    return null;
-                if (Application.Model == null || Application.Model.Options == null)
+                if (Application == null || Application.Model == null || Application.Model.Options == null)
                     return null;
 
                 var optionsTaskbar = Application.Model.Options as IModelTaskbarOptions;
@@ -45,6 +44,36 @@ namespace Para.Modules.Win.TaskbarIntegration
             }
         }
 
+        private bool CustomProtocolsUsed
+        {
+            get
+            {
+                if (Application == null || Application.Model == null || Application.Model.Options == null)
+                    return false;
+
+                var optionsProtocol = Application.Model.Options as IModelCustomProtocolOptions;
+
+                if(optionsProtocol == null || optionsProtocol.CustomProtocolOptions == null)
+                    return false;
+
+                return optionsProtocol.CustomProtocolOptions.EnableProtocols;
+            }
+        }
+        private string CustomProtocol
+        {
+            get
+            {
+                if (Application == null || Application.Model == null || Application.Model.Options == null)
+                    return null;
+
+                var optionsProtocol = Application.Model.Options as IModelCustomProtocolOptions;
+
+                if (optionsProtocol == null || optionsProtocol.CustomProtocolOptions == null)
+                    return null;
+
+                return optionsProtocol.CustomProtocolOptions.ProtocolName;
+            }
+        }
 
         private void InitJumpList()
         {
@@ -129,21 +158,12 @@ namespace Para.Modules.Win.TaskbarIntegration
                 var sc = new ViewShortcut(launcher.NavigationItem.View.Id, launcher.NavigationItem.ObjectKey);
                 var newArgs = sc.ToString();
 
-                var args = Environment.GetCommandLineArgs();
-                string applicationPath = null;
-
-                if (args.Length > 0)
-                    applicationPath = args[0];
-
-                if (Debugger.IsAttached)
-                {
-                    applicationPath = Application.GetType().Assembly.Location;
-                }
+                var arguments = BuildCommandLinePath(newArgs);
 
                 collection.Add(new JumpListItemTask(launcher.Caption)
                 {
-                    Arguments = newArgs,
-                    Path = applicationPath,
+                    Arguments = arguments.Item2,
+                    Path = arguments.Item1,
                     IconIndex = manager.GetImageIndex(launcher.ImageName),
                 });
             }
@@ -152,6 +172,25 @@ namespace Para.Modules.Win.TaskbarIntegration
             {
                 collection.Add(new JumpListItemSeparator());
             }
+        }
+
+        private Tuple<string, string> BuildCommandLinePath(string args)
+        {
+            if (CustomProtocolsUsed)
+            {
+                var protocol = CustomProtocol;
+                if (!string.IsNullOrEmpty(protocol))
+                    return Tuple.Create(protocol + "://" + args, string.Empty);
+            }
+
+            string applicationPath = TaskbarIntegrationWindowsFormsModule.ExecutablePath;
+
+            if (Debugger.IsAttached)
+            {
+                applicationPath = Application.GetType().Assembly.Location;
+            }
+
+            return Tuple.Create(applicationPath, args);
         }
 
         public TaskbarAssistant TaskbarAssistant { get; set; }
