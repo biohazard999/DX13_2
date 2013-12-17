@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Deployment.Application;
+using System.Globalization;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -16,17 +17,18 @@ namespace Para.Modules.Win.TaskbarIntegration
     public class SingleInstance : IDisposable
     {
         private readonly Boolean _OwnsMutex;
-        private Guid _Identifier = Guid.Empty;
+        private string _Identifier = Guid.Empty.ToString();
         private Mutex _Mutex;
 
         /// <summary>
         ///     Enforces single instance for an application.
         /// </summary>
         /// <param name="identifier">An identifier unique to this application.</param>
-        public SingleInstance(Guid identifier)
+        public SingleInstance(string identifier)
         {
             _Identifier = identifier;
-            _Mutex = new Mutex(true, identifier.ToString(), out _OwnsMutex);
+
+            _Mutex = new Mutex(true, identifier.ToString(CultureInfo.InvariantCulture), out _OwnsMutex);
         }
 
         /// <summary>
@@ -34,7 +36,7 @@ namespace Para.Modules.Win.TaskbarIntegration
         /// </summary>
         public Boolean IsFirstInstance
         {
-            get { return _OwnsMutex; }
+            get { return _OwnsMutex || Arguments.Length == 0; }
         }
 
         /// <summary>
@@ -47,33 +49,33 @@ namespace Para.Modules.Win.TaskbarIntegration
             if (arguments == null)
                 return false;
 
-            if (IsFirstInstance)
-                throw new InvalidOperationException("This is the first instance.");
-
-            try
+            if (!_OwnsMutex)
             {
-                using (var client = new NamedPipeClientStream(_Identifier.ToString()))
-                using (var writer = new StreamWriter(client))
+                try
                 {
-                    client.Connect(200);
-
-                    foreach (String argument in arguments)
+                    using (var client = new NamedPipeClientStream(_Identifier))
+                    using (var writer = new StreamWriter(client))
                     {
-                        if (!string.IsNullOrEmpty(argument))
-                        {
-                            writer.WriteLine(argument);
-                        }
-                    }
+                        client.Connect(200);
 
+                        foreach (String argument in arguments)
+                        {
+                            if (!string.IsNullOrEmpty(argument))
+                            {
+                                writer.WriteLine(argument);
+                            }
+                        }
+
+                    }
+                    return true;
                 }
-                return true;
+                catch (TimeoutException)
+                {
+                } //Couldn't connect to server
+                catch (IOException)
+                {
+                } //Pipe was broken
             }
-            catch (TimeoutException)
-            {
-            } //Couldn't connect to server
-            catch (IOException)
-            {
-            } //Pipe was broken
 
             return false;
         }
@@ -83,9 +85,8 @@ namespace Para.Modules.Win.TaskbarIntegration
         /// </summary>
         public void ListenForArgumentsFromSuccessiveInstances()
         {
-            if (!IsFirstInstance)
-                throw new InvalidOperationException("This is not the first instance.");
-            ThreadPool.QueueUserWorkItem(ListenForArguments);
+            if (_OwnsMutex)
+                ThreadPool.QueueUserWorkItem(ListenForArguments);
         }
 
         /// <summary>
@@ -94,32 +95,35 @@ namespace Para.Modules.Win.TaskbarIntegration
         /// <param name="state">State object required by WaitCallback delegate.</param>
         private void ListenForArguments(Object state)
         {
-            try
+            if (_OwnsMutex)
             {
-                using (var server = new NamedPipeServerStream(_Identifier.ToString()))
-                using (var reader = new StreamReader(server))
+                try
                 {
-                    server.WaitForConnection();
-
-                    var arguments = new List<String>();
-                    while (server.IsConnected)
+                    using (var server = new NamedPipeServerStream(_Identifier))
+                    using (var reader = new StreamReader(server))
                     {
-                        string result = reader.ReadLine();
+                        server.WaitForConnection();
 
-                        if (!string.IsNullOrEmpty(result))
-                            arguments.Add(result);
+                        var arguments = new List<String>();
+                        while (server.IsConnected)
+                        {
+                            string result = reader.ReadLine();
+
+                            if (!string.IsNullOrEmpty(result))
+                                arguments.Add(result);
+                        }
+
+
+                        ThreadPool.QueueUserWorkItem(CallOnArgumentsReceived, arguments.ToArray());
                     }
-
-
-                    ThreadPool.QueueUserWorkItem(CallOnArgumentsReceived, arguments.ToArray());
                 }
-            }
-            catch (IOException)
-            {
-            } //Pipe was broken
-            finally
-            {
-                ListenForArguments(null);
+                catch (IOException)
+                {
+                } //Pipe was broken
+                finally
+                {
+                    ListenForArguments(null);
+                }
             }
         }
 
@@ -135,7 +139,29 @@ namespace Para.Modules.Win.TaskbarIntegration
         /// <summary>
         ///     Event raised when arguments are received from successive instances.
         /// </summary>
-        public event EventHandler<ArgumentsReceivedEventArgs> ArgumentsReceived;
+        private static object _lock = new object();
+        private EventHandler<ArgumentsReceivedEventArgs> _ArgumentsReceived = (sender, args) => { };
+        public event EventHandler<ArgumentsReceivedEventArgs> ArgumentsReceived
+        {
+            add
+            {
+                lock (_lock)
+                {
+                    if (_OwnsMutex)
+                    {
+                        _ArgumentsReceived += value;
+                    }
+                }
+
+            }
+            remove
+            {
+                lock (_lock)
+                {
+                    _ArgumentsReceived -= value;
+                }
+            }
+        }
 
         /// <summary>
         ///     Fires the ArgumentsReceived event.
@@ -143,8 +169,7 @@ namespace Para.Modules.Win.TaskbarIntegration
         /// <param name="arguments">The arguments to pass with the ArgumentsReceivedEventArgs.</param>
         private void OnArgumentsReceived(String[] arguments)
         {
-            if (ArgumentsReceived != null)
-                ArgumentsReceived(this, new ArgumentsReceivedEventArgs { Args = arguments });
+            _ArgumentsReceived(this, new ArgumentsReceivedEventArgs { Args = arguments });
         }
 
         #region IDisposable

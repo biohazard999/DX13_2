@@ -22,9 +22,13 @@ namespace XAF13_2_Demo.Win
 
             const string applicationName = "XAF13.2_Demo";
 
-            var guid = new Guid("B3F684D7-4CE8-471D-8E56-61BCC274EAA5");
+            var assemblyName = typeof(Program).Assembly.GetName();
+            var mutexName = assemblyName.Name + "_" + assemblyName.Version.ToString(3);
 
-            using (var instance = new SingleInstance(guid))
+#if DEBUG
+            mutexName += "_Debug";
+#endif
+            using (var instance = new SingleInstance(mutexName))
             {
                 if (instance.IsFirstInstance)
                 {
@@ -67,8 +71,7 @@ namespace XAF13_2_Demo.Win
                 }
                 else
                 {
-                    
-                        instance.PassArgumentsToFirstInstance();
+                    instance.PassArgumentsToFirstInstance();
                 }
             }
 

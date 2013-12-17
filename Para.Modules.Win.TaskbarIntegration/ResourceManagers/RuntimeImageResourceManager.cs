@@ -35,7 +35,12 @@ namespace Para.Modules.Win.TaskbarIntegration.ResourceManagers
             var compilerErrors = GenerateImageAssembly(assemblyPath);
 
             if (compilerErrors == null)
+            {
+                if (File.Exists(assemblyPath)) //Second instance running
+                    return assemblyPath;
                 return null;
+            }
+                
 
             var imageTempPaths = GenerateTempImages(imageNames, _basePath);
 
