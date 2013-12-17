@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{E95840
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Para.Modules.Win.TaskbarIntegration", "Para.Modules.Win.TaskbarIntegration\Para.Modules.Win.TaskbarIntegration.csproj", "{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Para.Modules.Win.TaskbarIntegration", "Para.Modules.Win.TaskbarIntegration\Para.Modules.Win.TaskbarIntegration.csproj", "{F253336B-CF62-4DCE-A8D6-B6EB020B05A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Part1", "Part1", "{9B6D7F6B-A3C3-42DB-87EC-31FDE5858B85}"
 EndProject
@@ -33,6 +33,17 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Part4", "Part4", "{C5730E99-4EE4-454F-8222-891C92398A14}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 1
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://paratfs:8080/tfs/defaultcollection
+		SccProjectUniqueName0 = Para.Modules.Win.TaskbarIntegration\\Para.Modules.Win.TaskbarIntegration.csproj
+		SccProjectTopLevelParentUniqueName0 = XAF13.2_Demo.sln
+		SccProjectName0 = Para.Modules.Win.TaskbarIntegration
+		SccAuxPath0 = http://paratfs:8080/tfs/defaultcollection
+		SccLocalPath0 = Para.Modules.Win.TaskbarIntegration
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		EasyTest|Any CPU = EasyTest|Any CPU
@@ -57,12 +68,12 @@ Global
 		{D05D93DF-312D-4D4E-B980-726871EC7833}.EasyTest|Any CPU.Build.0 = EasyTest|Any CPU
 		{D05D93DF-312D-4D4E-B980-726871EC7833}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D05D93DF-312D-4D4E-B980-726871EC7833}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.EasyTest|Any CPU.ActiveCfg = Release|Any CPU
-		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.EasyTest|Any CPU.Build.0 = Release|Any CPU
-		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F253336B-CF62-4DCE-A8D6-B6EB020B05A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F253336B-CF62-4DCE-A8D6-B6EB020B05A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F253336B-CF62-4DCE-A8D6-B6EB020B05A2}.EasyTest|Any CPU.ActiveCfg = Release|Any CPU
+		{F253336B-CF62-4DCE-A8D6-B6EB020B05A2}.EasyTest|Any CPU.Build.0 = Release|Any CPU
+		{F253336B-CF62-4DCE-A8D6-B6EB020B05A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F253336B-CF62-4DCE-A8D6-B6EB020B05A2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{16ADFEC3-E454-41BB-A752-3C647310DAC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{16ADFEC3-E454-41BB-A752-3C647310DAC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16ADFEC3-E454-41BB-A752-3C647310DAC9}.EasyTest|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,6 +88,6 @@ Global
 		{7964F87D-BC5D-4C4E-8B2F-71E89739AA97} = {9B6D7F6B-A3C3-42DB-87EC-31FDE5858B85}
 		{D05D93DF-312D-4D4E-B980-726871EC7833} = {9B6D7F6B-A3C3-42DB-87EC-31FDE5858B85}
 		{5F15837D-D1E5-44DC-92F0-4F2EBE9C3F8D} = {9B6D7F6B-A3C3-42DB-87EC-31FDE5858B85}
-		{B9EF03FF-D05B-4FD4-A8E9-F90D819CB1DC} = {DAF258B2-32F6-4E6E-B11A-3CDD37AB24A9}
+		{F253336B-CF62-4DCE-A8D6-B6EB020B05A2} = {DAF258B2-32F6-4E6E-B11A-3CDD37AB24A9}
 	EndGlobalSection
 EndGlobal
