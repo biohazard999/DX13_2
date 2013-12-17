@@ -272,6 +272,18 @@ namespace Para.Modules.Win.TaskbarIntegration
             View shortCutView = TaskbarApplication.ProcessShortcut(sc);
 
             TaskbarApplication.ShowViewStrategy.ShowView(new ShowViewParameters(shortCutView), new ShowViewSource(null, null));
+
+            if ((TaskbarApplication.MainWindow as WinWindow).Form.WindowState == System.Windows.Forms.FormWindowState.Minimized)
+                (TaskbarApplication.MainWindow as WinWindow).Form.WindowState = System.Windows.Forms.FormWindowState.Normal;
+
+            if (!(TaskbarApplication.MainWindow as WinWindow).Form.TopMost)
+            {
+                (TaskbarApplication.MainWindow as WinWindow).Form.TopMost = true;
+                (TaskbarApplication.MainWindow as WinWindow).Form.TopMost = false;
+            }
+            
+            (TaskbarApplication.MainWindow as WinWindow).Form.BringToFront();
+            (TaskbarApplication.MainWindow as WinWindow).Form.Focus();
         }
 
         public static ViewShortcut CreateViewShortcutFromArguments(string argument)

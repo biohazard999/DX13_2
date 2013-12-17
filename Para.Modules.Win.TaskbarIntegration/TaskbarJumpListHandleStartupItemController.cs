@@ -17,10 +17,10 @@ namespace Para.Modules.Win.TaskbarIntegration
         {
             ((WinShowViewStrategyBase)Application.ShowViewStrategy).StartupWindowShown -= WinShowNavigationItemController_StartupWindowShown;
             var controller = Window.GetController<ShowNavigationItemController>();
-            ShowStartupNavigationItem(controller);
+            ShowJumpListNavigationItem(controller);
         }
 
-        protected virtual void ShowStartupNavigationItem(ShowNavigationItemController controller)
+        public void ShowJumpListNavigationItem(ShowNavigationItemController controller)
         {
             var args = SingleInstance.Arguments;
 
@@ -29,7 +29,10 @@ namespace Para.Modules.Win.TaskbarIntegration
                 var sc = TaskbarIntegrationWindowsFormsModule.CreateViewShortcutFromArguments(args[0]);
 
                 var item = new ChoiceActionItem("CommandLineArgument", sc);
-                controller.ShowNavigationItemAction.DoExecute(item);    
+                controller.ShowNavigationItemAction.DoExecute(item);
+
+                (Window as WinWindow).Form.BringToFront();
+                (Window as WinWindow).Form.Focus();
             }
         }
 

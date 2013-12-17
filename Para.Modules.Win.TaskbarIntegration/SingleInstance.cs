@@ -185,6 +185,10 @@ namespace Para.Modules.Win.TaskbarIntegration
         private static string[] FilterAndAppendSlash(IEnumerable<string> args)
         {
             var listOfArgs = new List<string>();
+
+            if (args == null)
+                return listOfArgs.ToArray();
+
             foreach (var argument in args)
             {
                 if (!string.IsNullOrEmpty(argument))
@@ -207,11 +211,11 @@ namespace Para.Modules.Win.TaskbarIntegration
         {
             get
             {
-                if (ApplicationDeployment.IsNetworkDeployed)
+                if (ApplicationDeployment.IsNetworkDeployed && AppDomain.CurrentDomain.SetupInformation.ActivationArguments != null)
                 {
                     var args = AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData;
 
-                    if (args.Length >= 1)
+                    if (args != null && args.Length >= 1)
                         args = args.Except(new[] { ApplicationDeployment.CurrentDeployment.UpdateLocation.ToString() }).ToArray();
 
                     return FilterAndAppendSlash(args);
